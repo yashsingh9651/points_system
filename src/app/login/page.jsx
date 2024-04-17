@@ -5,13 +5,16 @@ import { useRouter } from "next/navigation";
 import { Card, Input, Button, Typography } from "@material-tailwind/react";
 import { useFormik } from "formik";
 import { schema } from "@/Schema/Login";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Loading from "@/components/Loading";
 import axios from "axios";
+import { fetchUserData } from "@/redux/slices/user";
+import { useDispatch } from "react-redux";
 
 const Page = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   // Form Handling using formik.
   const form = useRef();
   const { values, handleChange, handleSubmit, errors, touched, handleBlur } =
@@ -23,14 +26,14 @@ const Page = () => {
       validationSchema: schema,
       onSubmit: async (values, action) => {
         setLoading(true);
-        const response = await axios.post("/api/users/login", values); 
+        const response = await axios.post("/api/users/login", values);
         if (response.data.success) {
+          dispatch(fetchUserData());
           action.resetForm();
           setLoading(false);
           toast.success(response.data.message);
           router.push("/");
-        }
-        else if (!response.data.success) {
+        } else if (!response.data.success) {
           setLoading(false);
           toast.error(response.data.error);
         }
@@ -39,7 +42,6 @@ const Page = () => {
   return (
     <>
       <div className="flex justify-center items-center gap-24 h-screen">
-        <Toaster />
         <Card color="transparent" shadow={false}>
           <Typography variant="h5" color="blue-gray">
             Log In
@@ -109,9 +111,9 @@ const Page = () => {
               </Button>
             )}
             <Typography color="gray" className="mt-4 text-center font-normal">
-              Already have an account?{" "}
+              Don't have an account? Create Account{" "}
               <Link href="/signup" className="font-medium text-gray-900">
-                Sign In
+                Sign Up
               </Link>
             </Typography>
             <Typography color="gray" className="mt-4 text-center font-normal">

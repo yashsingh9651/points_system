@@ -6,7 +6,7 @@ connect();
 export async function GET(request){
     try {
         const userId = await getTokenData(request);
-        const user = await User.findOne({_id: userId}).select("-password");
+        const user = await User.findById(userId).select("-password");
         return NextResponse.json({user,message:"User Found",success:true})
     } catch (error) {
         return NextResponse.json({error:error.message,success:false});

@@ -1,6 +1,5 @@
 "use client";
-import React, { useState } from "react";
-import axios from "axios";
+import React from "react";
 import {
   Navbar,
   Typography,
@@ -9,34 +8,24 @@ import {
   Collapse,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchUserData, logout } from "@/redux/slices/user";
 
 export function StickyNavbar() {
-  const [login, setLogin] = useState(false);
-  const path = usePathname();
+  const logedIn = useSelector((state) => state.user.logedIn);
   const [openNav, setOpenNav] = React.useState(false);
   const [pathname, setPathname] = React.useState(false);
-  // Fetching User Data
-  const fetchUser = async () => {
-    const res = await axios.get("/api/users/userData");
-    if (res.data.success) {
-      setLogin(true);
-    } else {
-      setLogin(false);
-    }
-  };
+  const dispatch = useDispatch();
   useEffect(() => {
-    fetchUser();
+    dispatch(fetchUserData());
     window.addEventListener(
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
     setPathname(window.location.pathname);
   }, []);
-  useEffect(() => {
-    fetchUser();
-  }, [path]);
   //Handeling Logout
   const router = useRouter();
   const handleLogout = async () => {
@@ -45,6 +34,7 @@ export function StickyNavbar() {
       const res = await response.json();
       if (res.success) {
         router.push("/login");
+        dispatch(logout(false));
       }
     } catch (error) {
       console.error(error);
@@ -59,7 +49,7 @@ export function StickyNavbar() {
         color="blue-gray"
         className="p-1 font-normal"
       >
-        <Link href="#" className="flex items-center">
+        <Link href="/profile" className="flex items-center">
           Profile
         </Link>
       </Typography>
@@ -69,14 +59,14 @@ export function StickyNavbar() {
     <Navbar className="absolute top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
       <div className="flex items-center justify-between text-blue-gray-900">
         <Typography
-          as="a"
+          as="li"
           className="mr-4 cursor-pointer py-1.5 font-semibold text-xl"
         >
-          Akanksha Enterprises
+          <Link href="/">Akanksha Enterprises</Link>
         </Typography>
         <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
-          {!login ? (
+          {!logedIn ? (
             <div className="flex items-center gap-x-1">
               <Link href="login">
                 <Button
@@ -147,7 +137,7 @@ export function StickyNavbar() {
       </div>
       <Collapse open={openNav}>
         {navList}
-        {!login ? (
+        {!logedIn ? (
           <div className="flex items-center gap-x-1">
             <Link className="w-1/2" href="login">
               <Button

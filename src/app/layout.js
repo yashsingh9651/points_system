@@ -2,6 +2,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { StickyNavbar } from "@/components/Navbar";
 import ReduxProvider from "@/redux/ReduxProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
     <ReduxProvider>
       <html lang="en">
         <body suppressHydrationWarning={true} className={inter.className}>
+          <Toaster />
           <StickyNavbar />
           {children}
         </body>

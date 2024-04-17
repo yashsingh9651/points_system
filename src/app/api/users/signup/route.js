@@ -26,7 +26,7 @@ export async function POST(request) {
     // send verification mail
     await sendMail({ email, emailType: "VERIFY", userId: savedUser._id });
     return NextResponse.json({
-      message: "User created successfully",
+      message: "User created successfully, Please verify your email to login.",
       success: true,
     });
   } catch (error) {

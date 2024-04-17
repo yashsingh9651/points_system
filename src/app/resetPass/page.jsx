@@ -22,7 +22,6 @@ const page = () => {
   };
   return (
     <div className="flex justify-center items-center gap-24 h-screen">
-      <Toaster />
       <Card color="transparent" shadow={false}>
         <Typography variant="h5" color="blue-gray">
           Reset Password
