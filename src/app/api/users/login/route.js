@@ -31,6 +31,7 @@ export async function POST(request) {
     const tokenData = {
       id: user._id,
       email: user.email,
+      isAdmin: user.isAdmin
     };
     // Create Token
     // Add JWT_SECRET to .env file

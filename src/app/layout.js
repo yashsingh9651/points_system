@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body suppressHydrationWarning={true} className={inter.className}>
           <Toaster />
-          <StickyNavbar />
+          {<StickyNavbar />}
           {children}
         </body>
       </html>

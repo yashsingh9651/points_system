@@ -8,15 +8,16 @@ import {
   Collapse,
 } from "@material-tailwind/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { useRouter,usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData, logout } from "@/redux/slices/user";
 
 export function StickyNavbar() {
-  const logedIn = useSelector((state) => state.user.logedIn);
+  const pathname = usePathname()
+  const isLogedIn = useSelector((state) => state.user.isLogedIn);
   const [openNav, setOpenNav] = React.useState(false);
-  const [pathname, setPathname] = React.useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchUserData());
@@ -24,7 +25,6 @@ export function StickyNavbar() {
       "resize",
       () => window.innerWidth >= 960 && setOpenNav(false)
     );
-    setPathname(window.location.pathname);
   }, []);
   //Handeling Logout
   const router = useRouter();
@@ -56,17 +56,24 @@ export function StickyNavbar() {
     </ul>
   );
   return (
-    <Navbar className="absolute top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4">
+    <Navbar className={`${pathname=="/studio/structure"&&"hidden"} ${pathname=="/studio/vision"&&"hidden"} absolute top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4`}>
       <div className="flex items-center justify-between text-blue-gray-900">
-        <Typography
-          as="li"
-          className="mr-4 cursor-pointer py-1.5 font-semibold text-xl"
+        <Link
+          className="mr-4 cursor-pointer py-1.5 font-semibold text-lg lg:text-xl flex gap-2 items-center"
+          href="/"
         >
-          <Link href="/">Akanksha Enterprises</Link>
-        </Typography>
+          <Image
+            width={200}
+            height={200}
+            className="w-6 lg:w-8 aspect-square object-cover"
+            src="/logo_black.png"
+            alt="logo"
+          />
+          <h1>Akanksha Enterprises</h1>
+        </Link>
         <div className="flex items-center gap-4">
           <div className="mr-4 hidden lg:block">{navList}</div>
-          {!logedIn ? (
+          {!isLogedIn ? (
             <div className="flex items-center gap-x-1">
               <Link href="login">
                 <Button
@@ -137,7 +144,7 @@ export function StickyNavbar() {
       </div>
       <Collapse open={openNav}>
         {navList}
-        {!logedIn ? (
+        {!isLogedIn ? (
           <div className="flex items-center gap-x-1">
             <Link className="w-1/2" href="login">
               <Button

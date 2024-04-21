@@ -11,12 +11,12 @@ export const user = createSlice({
   name: "user",
   initialState: {
     loading: false,
-    logedIn: false,
+    isLogedIn: false,
     userData: {},
   },
   reducers: {
     logout: (state,action) => {
-      state.logedIn = action.payload;
+      state.isLogedIn = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -28,7 +28,7 @@ export const user = createSlice({
         state.loading = false;
         state.userData = action.payload.user;
         if (action.payload.success) {
-          state.logedIn = true;
+          state.isLogedIn = true;
         }
       });
   },
