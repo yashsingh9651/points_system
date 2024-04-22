@@ -14,8 +14,13 @@ module.exports = withMT({
       screens: {
         "2xl": "1400px",
       },
+      
+    },
+    fontFamily: {
+      Ubuntu: "Ubuntu",
     },
     extend: {
+      
     },
   },
 });
