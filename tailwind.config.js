@@ -14,13 +14,15 @@ module.exports = withMT({
       screens: {
         "2xl": "1400px",
       },
-      
     },
     fontFamily: {
       Ubuntu: "Ubuntu",
+      PermanentMarker:"Permanent Marker"
     },
     extend: {
-      
+      gridTemplateColumns: {
+        Hero: "400px auto 400px",
+      },
     },
   },
 });

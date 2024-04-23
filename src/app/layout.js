@@ -12,9 +12,12 @@ export default function RootLayout({ children }) {
   return (
     <ReduxProvider>
       <html lang="en">
-        <body suppressHydrationWarning={true} className="font-Ubuntu scroll-smooth">
+        <body
+          suppressHydrationWarning={true}
+          className="font-Ubuntu scroll-smooth"
+        >
           <Toaster />
-          {<StickyNavbar />}
+          <StickyNavbar />
           {children}
         </body>
       </html>
