@@ -5,6 +5,7 @@ import imageUrlBuilder from "@sanity/image-url";
 import Profile from "@/components/Profile";
 import { useDispatch, useSelector } from "react-redux";
 import { getTransactions } from "@/redux/slices/user";
+import Transactions from "@/components/Transactions";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -26,36 +27,19 @@ export default function Home() {
   }, []);
   // Fetching Transactions
   useEffect(() => {
-    dispatch(
-      getTransactions({ email: userData.email, shopName: userData.shopName })
-    );
-  }, [userData.email]);
+    if (window.innerWidth > 500) {
+      dispatch(
+        getTransactions({ email: userData.email, shopName: userData.shopName })
+      );
+    }
+  }, [userData.points]);
   return (
     <>
-      <div className="grid lg:grid-cols-Hero gap-6 h-screen w-screen pt-16 lg:pt-24 px-6">
+      <div className="grid xl:grid-cols-Hero gap-6 h-screen w-screen pt-16 lg:pt-24 px-6">
         {/* Transcation Section */}
-        <div className="h-full relative hidden lg:block">
+        <div className="h-full relative hidden xl:block">
           <div className="sticky top-16 lg:top-24 flex flex-col gap-4 p-2">
-            <h1 className="text-2xl font-semibold text-center font-sans">
-              Transcations
-            </h1>
-            {/* Maping Transaction Details */}
-            {/* <div className="flex gap-5 items-center justify-between border border-gray-300 shadow-lg rounded-md p-3">
-              <h1 className="text-3xl font-medium text-green-500">+200</h1>
-              <div className="text-lg text-gray-800 text-end">
-                <h1>Bill Number 13</h1>
-                <h1>1 Dec 2023</h1>
-              </div>
-            </div> */}
-            {transactions.map((transaction) => (
-              <div key={transaction._id} className="flex gap-5 items-center justify-between border border-gray-300 shadow-lg rounded-md p-3">
-                {transaction.type!=="DEBIT"?<h1 className="text-3xl font-medium text-green-500">+{transaction.amount}</h1>:
-                <h1 className="text-3xl font-medium text-red-500">-{transaction.amount}</h1>}
-                <div className="text-lg text-gray-800">
-                  <h1>{transaction.createdAt.slice(0,10)}</h1>
-                </div>
-              </div>
-            ))}
+            <Transactions transactions={transactions} />
           </div>
         </div>
         {/* Feeds Section */}
@@ -77,14 +61,12 @@ export default function Home() {
                 {product.brand} {product.name}
               </h1>
               <h1 className="px-2 text-lg">₹ {product.price}</h1>
-              <h1 className="px-2 text-base font-medium">
-                {product.description}
-              </h1>
+              <h1 className="px-2 text-base">{product.description}</h1>
             </div>
           ))}
         </div>
         {/* Profile Section */}
-        <div className="h-full relative hidden lg:block">
+        <div className="h-full relative hidden xl:block">
           <div className=" sticky top-16 lg:top-24 flex flex-col items-center gap-5">
             <h1 className="text-2xl font-semibold text-center font-sans">
               Profile

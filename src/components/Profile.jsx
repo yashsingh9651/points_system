@@ -25,7 +25,7 @@ const Profile = ({ userData }) => {
         {userData.username?.charAt(0)}
       </div>
       <CardBody className="text-black text-lg">
-        <div className="font-medium flex flex-col md:flex-row items-start md:items-center justify-between">
+        <div className="font-medium flex items-start md:items-center justify-between">
           <h1>{userData.username}</h1>
           <h1>{userData.points}</h1>
         </div>

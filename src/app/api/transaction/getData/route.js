@@ -5,9 +5,10 @@ connect();
 
 export async function POST(request) {
   try {
-    const {email,shopName} =await request.json();
-    const transactions =await Transaction.find({email,shopName});
-    return NextResponse.json({transactions,success:true});
+    const { email, shopName } = await request.json();
+    const transactions = await Transaction.find({ email, shopName });
+    transactions.reverse();
+    return NextResponse.json({ transactions, success: true });
   } catch (error) {
     return NextResponse.json({ error: error.message, success: false });
   }
