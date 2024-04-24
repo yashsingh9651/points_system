@@ -19,6 +19,7 @@ const Page = () => {
       initialValues: {
         username: "",
         email: "",
+        shopName: "",
         password: "",
       },
       validationSchema: Schema,
@@ -90,6 +91,28 @@ const Page = () => {
                 {errors.email && touched.email && (
                   <p className="absolute top-3 right-2 text-red-600">
                     {errors.email}
+                  </p>
+                )}
+              </div>
+              <Typography variant="h6" color="blue-gray" className="-mb-3">
+                Your Shop Name
+              </Typography>
+              <div className="relative">
+                <Input
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  name="email"
+                  value={values.shopName}
+                  size="lg"
+                  placeholder="name@mail.com"
+                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  labelProps={{
+                    className: "before:content-none after:content-none",
+                  }}
+                />
+                {errors.shopName && touched.shopName && (
+                  <p className="absolute top-3 right-2 text-red-600">
+                    {errors.shopName}
                   </p>
                 )}
               </div>

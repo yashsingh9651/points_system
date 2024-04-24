@@ -29,7 +29,7 @@ const Profile = ({ userData }) => {
           <h1>{userData.username}</h1>
           <h1>{userData.points}</h1>
         </div>
-        <h1>{userData.shopName}</h1>
+        <h1>{userData?.shopName}</h1>
         <h1>{userData.email}</h1>
       </CardBody>
       <CardFooter className="py-0">
