@@ -101,10 +101,10 @@ const Page = () => {
                 <Input
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  name="email"
+                  name="shopName"
                   value={values.shopName}
                   size="lg"
-                  placeholder="name@mail.com"
+                  placeholder="akanksha enterprises"
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
                     className: "before:content-none after:content-none",
