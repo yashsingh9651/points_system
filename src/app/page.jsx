@@ -45,17 +45,17 @@ export default function Home() {
           </div>
         </div>
         {/* Feeds Section */}
-        <div className="h-full flex flex-col gap-6 items-center pb-6">
-          <h1 className="text-2xl font-semibold text-center font-sans">
+        <div className="h-full pb-6">
+          <h1 className="text-2xl font-semibold mb-6 text-center font-sans">
             New Arrivals
           </h1>
           {!isProFetched ? (
             <Feed />
           ) : (
-            <div>
+            <div className=" flex flex-col gap-6 items-center">
               {products.map((product) => (
                 <div
-                  className="md:w-[400px] w-[300px] border pb-2 border-gray-100 rounded-lg shadow-md"
+                  className="md:w-[400px] w-[300px] border pb-2 border-gray-100 rounded-lg shadow"
                   key={product._id}
                 >
                   <img
