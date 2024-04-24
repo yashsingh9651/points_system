@@ -17,6 +17,7 @@ import { fetchUserData, logout } from "@/redux/slices/user";
 export function StickyNavbar() {
   const pathname = usePathname()
   const isLogedIn = useSelector((state) => state.user.isLogedIn);
+  const loading = useSelector((state) => state.user.loading);
   const [openNav, setOpenNav] = React.useState(false);
   const dispatch = useDispatch();
   useEffect(() => {

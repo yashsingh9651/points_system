@@ -8,14 +8,14 @@ export async function POST(req) {
     const reqBody = await req.json();
     const { email } = reqBody;
     //check if user exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).select('-password');
     if (!user) {
       return NextResponse.json({
         message: "Gmail not Found",
         success: false,
       });
     }
-    await sendMail({ email, emailType: "RESET", userId: user._id });
+    await sendMail({ email, emailType: "RESET", userId: user._id,name:user.username });
     return NextResponse.json({
       message: "Reset Password Link send to your given gmail address",
       success: true,

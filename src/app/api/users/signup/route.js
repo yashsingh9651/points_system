@@ -25,7 +25,7 @@ export async function POST(request) {
     });
     const savedUser = await newUser.save();
     // send verification mail
-    await sendMail({ email, emailType: "VERIFY", userId: savedUser._id });
+    await sendMail({ email, emailType: "VERIFY", userId: savedUser._id,name:username });
     return NextResponse.json({
       message: "User created successfully, Please verify your email to login.",
       success: true,

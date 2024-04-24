@@ -27,8 +27,9 @@ export const getTransactions = createAsyncThunk(
 export const user = createSlice({
   name: "user",
   initialState: {
-    loading: false,
+    isUserFetched: false,
     isLogedIn: false,
+    isTransFetched: false,
     userData: {},
     transactions: [],
   },
@@ -38,23 +39,20 @@ export const user = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(fetchUserData.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(fetchUserData.fulfilled, (state, action) => {
-        state.loading = false;
-        state.userData = action.payload.user;
-        if (action.payload.success) {
-          state.isLogedIn = true;
-        }
-      });
+    builder.addCase(fetchUserData.fulfilled, (state, action) => {
+      state.isUserFetched = true;
+      state.userData = action.payload.user;
+      if (action.payload.success) {
+        state.isLogedIn = true;
+      }
+    });
     builder.addCase(addTranscations.fulfilled, (state, action) => {
       toast.success(action.payload.message);
       state.userData = action.payload.userData;
     });
     builder.addCase(getTransactions.fulfilled, (state, action) => {
       state.transactions = action.payload.transactions;
+      state.isTransFetched = true;
     });
   },
 });
