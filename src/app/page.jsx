@@ -77,7 +77,7 @@ export default function Home() {
             <h1 className="text-2xl font-semibold text-center font-sans">
               Profile
             </h1>
-            <Profile userData={userData} />
+            <Profile />
           </div>
         </div>
       </div>

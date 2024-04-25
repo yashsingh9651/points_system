@@ -2,12 +2,12 @@ import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
-  const adminPath = path === "/admin" || path.slice(0,7) === "/studio";
+  const adminPath = path.slice(0,6) === "/admin" || path.slice(0, 7) === "/studio";
   const isPublicPath =
     path === "/login" ||
     path === "/signup" ||
     path === "/verifyemail" ||
-    path.slice(0,10) === "/resetPass";
+    path.slice(0, 10) === "/resetPass";
   const token = request.cookies.get("token")?.value || "";
   // Admin Role Protected Route
   function getJwtSecretKey() {
@@ -44,6 +44,6 @@ export const config = {
     "/signup",
     "/verifyemail",
     "/resetPass/:path*",
-    "/admin",
+    "/admin/:path*",
   ],
 };

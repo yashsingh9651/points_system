@@ -146,7 +146,7 @@ const Page = () => {
             )}
             <Typography color="gray" className="mt-4 text-center font-normal">
               Already have an account?{" "}
-              <Link href="/login" className="font-medium text-gray-900">
+              <Link href="/login" className="font-medium hover:underline text-gray-900">
                 Log In
               </Link>
             </Typography>

@@ -9,15 +9,15 @@ import {
 } from "@material-tailwind/react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter,usePathname } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchUserData, logout } from "@/redux/slices/user";
 
 export function StickyNavbar() {
-  const pathname = usePathname()
+  const pathname = usePathname();
   const isLogedIn = useSelector((state) => state.user.isLogedIn);
-  const loading = useSelector((state) => state.user.loading);
+  const userData = useSelector((state) => state.user.userData);
   const [openNav, setOpenNav] = React.useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -42,22 +42,34 @@ export function StickyNavbar() {
     }
   };
   const navList = (
-    <ul className="mt-2 xl:hidden mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
+    <ul className="mt-2 mb-4 flex flex-col gap-2 lg:mb-0 lg:mt-0 lg:flex-row lg:items-center lg:gap-6">
       <Typography
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal"
+        className="p-1 font-normal xl:hidden"
       >
         <Link href="/profile" className="flex items-center">
           Profile
         </Link>
       </Typography>
+      {userData?.isAdmin && (
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <Link href="/admin" className="flex items-center">
+            Admin
+          </Link>
+        </Typography>
+      )}
       <Typography
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal"
+        className="p-1 font-normal xl:hidden"
       >
         <Link href="/transactions" className="flex items-center">
           Transactions
@@ -66,7 +78,11 @@ export function StickyNavbar() {
     </ul>
   );
   return (
-    <Navbar className={`${pathname.slice(0,7)=="/studio"&&"hidden"} fixed top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4`}>
+    <Navbar
+      className={`${
+        pathname.slice(0, 7) == "/studio" && "hidden"
+      } fixed top-0 z-10 h-max max-w-full rounded-none px-4 py-2 lg:px-8 lg:py-4`}
+    >
       <div className="flex items-center justify-between text-blue-gray-900">
         <Link
           className="mr-4 cursor-pointer py-1.5 font-semibold text-lg lg:text-xl flex gap-2 items-center"

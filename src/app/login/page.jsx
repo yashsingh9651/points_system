@@ -112,13 +112,13 @@ const Page = () => {
             )}
             <Typography color="gray" className="mt-4 text-center font-normal">
               Don't have an account? Create Account{" "}
-              <Link href="/signup" className="font-medium text-gray-900">
+              <Link href="/signup" className="font-medium hover:underline text-gray-900">
                 Sign Up
               </Link>
             </Typography>
             <Typography color="gray" className="mt-4 text-center font-normal">
               Forgot Password?{" "}
-              <Link href="/resetPass" className="font-medium text-gray-900">
+              <Link href="/resetPass" className="font-medium hover:underline text-gray-900">
                 Reset Password
               </Link>
             </Typography>

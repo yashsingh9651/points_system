@@ -6,16 +6,16 @@ connect();
 
 export async function POST(request) {
   try {
-    const { email, shopName, amount, type } = await request.json();
-    const user = await User.findOne({ email, shopName }).select("-password");
+    const { email, amount, type,username } = await request.json();
+    const user = await User.findOne({ email }).select("-password");
     const newTransaction = new Transaction({
       email,
       type,
-      shopName,
+      username,
       amount,
     });
     // Redeeming the points
-    if (type === "DEBIT" && user.points>=amount&&amount>100) {
+    if (type === "DEBIT" && user.points>=amount&&amount>=100) {
       await newTransaction.save();
       user.points -= amount;
       const userData=await user.save();

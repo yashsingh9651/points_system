@@ -4,10 +4,11 @@ import { Card, CardBody, CardFooter, Button } from "@material-tailwind/react";
 import { useDispatch,useSelector } from "react-redux";
 import { addTranscations } from "@/redux/slices/user";
 import ProfileSkeleton from "@/skeleton/ProfileSkeleton";
-const Profile = ({ userData }) => {
+const Profile = () => {
   const isUserFetched = useSelector((state)=>state.user.isUserFetched);
+  const userData = useSelector((state)=>state.user.userData);
   const [showBox, setShowBox] = useState(false);
-  const [points, setPoints] = useState(null);
+  const [points, setPoints] = useState(0);
   const dispatch = useDispatch();
   const handleRedeem = () => {
     dispatch(
@@ -15,7 +16,7 @@ const Profile = ({ userData }) => {
         type: "DEBIT",
         email: userData.email,
         amount: points,
-        shopName: userData.shopName,
+        username: userData.username,
       })
     );
     setPoints(null);
@@ -25,15 +26,15 @@ const Profile = ({ userData }) => {
     <>
       {isUserFetched?<Card className="w-10/12 md:w-1/2 lg:w-96 py-4 border border-gray-300">
         <div className="w-14 mx-auto rounded-full capitalize aspect-square overflow-hidden bg-gray-500 text-center text-gray-100 object-cover text-6xl font-black">
-          {userData.username?.charAt(0)}
+          {userData?.username?.charAt(0)}
         </div>
         <CardBody className="text-black text-lg">
           <div className="font-medium flex items-start md:items-center justify-between">
-            <h1>{userData.username}</h1>
-            <h1>{userData.points}</h1>
+            <h1>{userData?.username}</h1>
+            <h1>{userData?.points}</h1>
           </div>
           <h1>{userData?.occupation}</h1>
-          <h1>{userData.email}</h1>
+          <h1>{userData?.email}</h1>
         </CardBody>
         <CardFooter className="py-0">
           {!showBox && (
@@ -54,9 +55,9 @@ const Profile = ({ userData }) => {
                   Minimum 100 points to redeem
                 </h1>
               )}
-              {points > userData.points && (
+              {points > userData?.points && (
                 <h1 className="absolute -top-7 text-red-600 left-0">
-                  You can redeem maximum {userData.points} points
+                  You can redeem maximum {userData?.points} points
                 </h1>
               )}
               <input
@@ -77,7 +78,7 @@ const Profile = ({ userData }) => {
                 </Button>
                 <Button
                   ripple={false}
-                  disabled={points < 100 || points > userData.points}
+                  disabled={points < 100 || points > userData?.points}
                   onClick={() => handleRedeem()}
                   className="bg-green-500 hover:bg-green-700 duration-300 w-1/2 text-white shadow-none hover:scale-105 text-base hover:shadow-none focus:scale-105 focus:shadow-none active:scale-100"
                 >

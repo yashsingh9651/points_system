@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const transSchema = new mongoose.Schema({
   email: { type: String, required: [true, "Please provide an email"] },
-  shopName: { type: String, required: [true, "Please provide shop name"] },
+  username: { type: String, required: [true, "Please provide username"] },
   amount: {
     type: Number,
     required: [true, "Please provide an amount"],
