@@ -11,16 +11,14 @@ const page = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (window.innerWidth < 1200) {
-      dispatch(
-        getTransactions({ email: userData.email, shopName: userData.shopName })
-      );
+      dispatch(getTransactions({ email: userData.email }));
     }
   }, [userData.points]);
 
   return (
     <>
       <div className="xl:hidden pt-20 lg:p-24 px-4">
-        <Transactions/>
+        <Transactions />
       </div>
       <div className="hidden xl:block">
         <NotFound />

@@ -15,7 +15,7 @@ export async function POST(request) {
       amount,
     });
     // Redeeming the points
-    if (type === "DEBIT" && user.points>=amount) {
+    if (type === "DEBIT" && user.points>=amount&&amount>100) {
       await newTransaction.save();
       user.points -= amount;
       const userData=await user.save();

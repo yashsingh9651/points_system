@@ -7,7 +7,7 @@ export async function middleware(request) {
     path === "/login" ||
     path === "/signup" ||
     path === "/verifyemail" ||
-    path === "/resetPass";
+    path.slice(0,10) === "/resetPass";
   const token = request.cookies.get("token")?.value || "";
   // Admin Role Protected Route
   function getJwtSecretKey() {
@@ -43,7 +43,7 @@ export const config = {
     "/login",
     "/signup",
     "/verifyemail",
-    "/resetPass",
+    "/resetPass/:path*",
     "/admin",
   ],
 };

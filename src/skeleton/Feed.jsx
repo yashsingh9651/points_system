@@ -4,7 +4,7 @@ import {Card, CardBody,Typography, CardHeader } from "@material-tailwind/react";
 
 const Feed = () => {
   return (
-    <Card className="mt-0 md:w-[400px] w-[300px] animate-pulse">
+    <Card className="mt-0 md:w-[400px] mx-auto w-[300px] animate-pulse">
       <CardHeader
         shadow={false}
         floated={false}

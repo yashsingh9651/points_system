@@ -4,8 +4,8 @@ import ReduxProvider from "@/redux/ReduxProvider";
 import { Toaster } from "react-hot-toast";
 
 export const metadata = {
-  title: "Points System",
-  description: "Created by Yash Kumar Singh",
+  title: "Akanksha Enterprises",
+  description: "Your Bussiness Points is now in your pocket",
 };
 
 export default function RootLayout({ children }) {

@@ -19,22 +19,20 @@ export default function Home() {
     setProducts(res);
     setIsProFetched(true);
   };
+  useEffect(() => {
+    fetchProducts();
+  }, []);
   // Converting Sanity Image Coded Content to Url
   const builder = imageUrlBuilder(client);
   function urlFor(source) {
     return builder.image(source);
   }
-  useEffect(() => {
-    fetchProducts();
-  }, []);
   // Fetching Transactions
   useEffect(() => {
     if (window.innerWidth > 500) {
-      dispatch(
-        getTransactions({ email: userData.email, shopName: userData.shopName })
-      );
+      dispatch(getTransactions({ email: userData.email }));
     }
-  }, [userData.points]);
+  }, [userData?.points]);
   return (
     <>
       <div className="grid xl:grid-cols-Hero gap-6 h-screen w-screen pt-16 lg:pt-24 px-6">

@@ -24,7 +24,7 @@ const Profile = ({ userData }) => {
   return (
     <>
       {isUserFetched?<Card className="w-10/12 md:w-1/2 lg:w-96 py-4 border border-gray-300">
-        <div className="w-14 mx-auto rounded-full aspect-square overflow-hidden bg-gray-500 text-center text-gray-100 object-cover text-6xl font-black">
+        <div className="w-14 mx-auto rounded-full capitalize aspect-square overflow-hidden bg-gray-500 text-center text-gray-100 object-cover text-6xl font-black">
           {userData.username?.charAt(0)}
         </div>
         <CardBody className="text-black text-lg">
@@ -32,7 +32,7 @@ const Profile = ({ userData }) => {
             <h1>{userData.username}</h1>
             <h1>{userData.points}</h1>
           </div>
-          <h1>{userData?.shopName}</h1>
+          <h1>{userData?.occupation}</h1>
           <h1>{userData.email}</h1>
         </CardBody>
         <CardFooter className="py-0">

@@ -19,7 +19,7 @@ const Page = () => {
       initialValues: {
         username: "",
         email: "",
-        shopName: "",
+        occupation: "Businessman",
         password: "",
       },
       validationSchema: Schema,
@@ -31,12 +31,14 @@ const Page = () => {
           setLoading(false);
           toast.success(res.data.message);
           router.push("/login");
+        }else{
+          toast.error(res.data.error);
         }
       },
     });
   return (
     <>
-      <div className="flex justify-center items-center gap-24 h-screen">
+      <div className="flex justify-center items-center h-screen">
         <Card color="transparent" shadow={false}>
           <Typography variant="h5" color="blue-gray">
             Sign Up
@@ -47,9 +49,9 @@ const Page = () => {
           <form
             ref={form}
             onSubmit={handleSubmit}
-            className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96"
+            className="my-2 w-80 max-w-screen-lg sm:w-96"
           >
-            <div className="mb-1 flex flex-col gap-6">
+            <div className="mb-1 flex flex-col gap-3">
               <Typography variant="h6" color="blue-gray" className="-mb-3">
                 Your Name
               </Typography>
@@ -95,24 +97,17 @@ const Page = () => {
                 )}
               </div>
               <Typography variant="h6" color="blue-gray" className="-mb-3">
-                Your Shop Name
+                Your Occupation
               </Typography>
               <div className="relative">
-                <Input
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  name="shopName"
-                  value={values.shopName}
-                  size="lg"
-                  placeholder="akanksha enterprises"
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                />
-                {errors.shopName && touched.shopName && (
+                <select value={values.occupation} className="w-full px-4 py-3 rounded-md bg-white border border-gray-400 focus:!border-t-gray-900" name="occupation" onBlur={handleBlur} onChange={handleChange}>
+                  <option value="Businessman">Businessman</option>
+                  <option value="Painter">Painter</option>
+                  <option value="Plumber">Plumber</option>
+                </select>
+                {errors.occupation && touched.occupation && (
                   <p className="absolute top-3 right-2 text-red-600">
-                    {errors.shopName}
+                    {errors.occupation}
                   </p>
                 )}
               </div>
