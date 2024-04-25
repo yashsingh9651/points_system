@@ -1,6 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
+
+// Fetching users and transaction for Admin
+export const fetchData = createAsyncThunk("fetchData", async (email) => {
+  const response = await axios.post("/api/admin", { email });
+  return response.data;
+});
 // Fetching UserData
 export const fetchUserData = createAsyncThunk("fetchUserData", async () => {
   const response = await axios.get("/api/users/userData");
@@ -32,6 +38,10 @@ export const user = createSlice({
     isTransFetched: false,
     userData: {},
     transactions: [],
+    // For Admin Pages
+    allUsers: [],
+    allTransactions: [],
+    Loading: false,
   },
   reducers: {
     logout: (state, action) => {
@@ -54,6 +64,16 @@ export const user = createSlice({
       state.transactions = action.payload.transactions;
       state.isTransFetched = true;
     });
+    builder
+      .addCase(fetchData.pending, (state) => {
+        state.Loading = true;
+      })
+      .addCase(fetchData.fulfilled, (state, action) => {
+        toast.success(action.payload.message);
+        state.allUsers = action.payload.users;
+        state.allTransactions = action.payload.transactions;
+        state.Loading = false;
+      });
   },
 });
 export const { logout } = user.actions;

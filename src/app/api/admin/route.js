@@ -3,12 +3,12 @@ import { NextResponse } from "next/server";
 import User from "@/models/userModel";
 import Transaction from "@/models/transModel";
 connect();
-
+// Sending Transactions and Users to the Admin
 export async function POST(request) {
   try {
     const { email } = await request.json();
-    const admin = await User.find({ email });
-    if (!admin.isAdmin) {
+    const admin = await User.findOne({ email });
+    if (admin.isAdmin) {
       const users = await User.find({ isAdmin: false });
       users.reverse();
       const transactions = await Transaction.find();

@@ -1,7 +1,14 @@
 "use cient";
 import { Card, Typography } from "@material-tailwind/react";
+import { useSelector } from "react-redux";
+import axios from "axios";
 
 const Table = ({ data, tableHead, type }) => {
+  const { email } = useSelector((state) => state.user.userData);
+  const loading = useSelector((state) => state.user.loading);
+  const updateStatus = async (_id) => {
+    await axios.put("/api/admin/updateTrans", { email, _id });
+  };
   if (type === "USERS") {
     return (
       <Card className="h-full w-full xl:w-4/5 mx-auto overflow-scroll">
@@ -25,7 +32,7 @@ const Table = ({ data, tableHead, type }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((user, index) => {
+            {data?.map((user, index) => {
               const isLast = index === data.length - 1;
               const classes = isLast
                 ? "p-4"
@@ -110,7 +117,7 @@ const Table = ({ data, tableHead, type }) => {
             </tr>
           </thead>
           <tbody>
-            {data.map((user, index) => {
+            {data?.map((user, index) => {
               const isLast = index === data.length - 1;
               const classes = isLast
                 ? "p-4"
@@ -147,21 +154,25 @@ const Table = ({ data, tableHead, type }) => {
                   </td>
                   <td className={classes}>
                     <div
-                      className={`${user.status==="pending"?"bg-red-400":"bg-green-500"} font-normal text-center p-4 py-2 rounded-md text-[#F1F1F1] text-center capitalize`}
+                      className={`${
+                        user.status === "pending"
+                          ? "bg-red-400"
+                          : "bg-green-500"
+                      } font-normal p-4 py-2 rounded-md text-[#F1F1F1] text-center capitalize`}
                     >
                       {user.status}
                     </div>
                   </td>
                   <td className={classes}>
-                    <Typography
-                      as="a"
-                      href="#"
+                    <button
+                      onClick={() => updateStatus(user._id)}
+                      disabled={loading}
                       variant="small"
                       color="blue-gray"
-                      className="font-medium text-center"
+                      className="font-medium w-full text-center bg-gray-500 py-2 hover:scale-105 duration-300 text-white rounded-md cursor-pointer"
                     >
-                      Edit
-                    </Typography>
+                      {user.status === "pending" ? "Approve" : "Reject"}
+                    </button>
                   </td>
                 </tr>
               );
