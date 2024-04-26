@@ -4,13 +4,13 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { fetchData } from "@/redux/slices/user";
+import { fetchData, showBox } from "@/redux/slices/user";
 
 const Table = ({ data, tableHead, type }) => {
-  const dispatch = useDispatch();
   const { email } = useSelector((state) => state.user.userData);
-  const [loading, setLoading] = useState(false);
   // Updating the transation status for
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
   const updateStatus = async (_id) => {
     setLoading(true);
     const res = await axios.put("/api/admin/updateTrans", { email, _id });
@@ -89,11 +89,11 @@ const Table = ({ data, tableHead, type }) => {
                   </td>
                   <td className={classes}>
                     <Typography
-                      as="a"
-                      href="#"
-                      variant="small"
                       color="blue-gray"
-                      className="font-medium text-center"
+                      onClick={() =>
+                        dispatch(showBox({email,username:user.username,occupation:user.occupation,userEmail:user.email,_id:user._id}))
+                      }
+                      className="font-medium text-center px-4 cursor-pointer hover:scale-105 duration-300 bg-gray-400 py-2 rounded-md"
                     >
                       Edit
                     </Typography>

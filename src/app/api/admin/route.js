@@ -9,7 +9,7 @@ export async function POST(request) {
     const { email } = await request.json();
     const admin = await User.findOne({ email });
     if (admin.isAdmin) {
-      const users = await User.find({ isAdmin: false });
+      const users = await User.find({ isAdmin: false }).select('-password');
       users.reverse();
       const transactions = await Transaction.find();
       transactions.reverse();

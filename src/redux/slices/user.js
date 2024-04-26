@@ -1,7 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
-
 // Fetching users and transaction for Admin
 export const fetchData = createAsyncThunk("fetchData", async (email) => {
   const response = await axios.post("/api/admin", { email });
@@ -41,10 +40,16 @@ export const user = createSlice({
     // For Admin Pages
     allUsers: [],
     allTransactions: [],
+    showBox: false,
+    boxdetails:{},
   },
   reducers: {
     logout: (state, action) => {
       state.isLogedIn = action.payload;
+    },
+    showBox: (state,action) => {
+      state.showBox = !state.showBox;
+      state.boxdetails = action?.payload;
     },
   },
   extraReducers: (builder) => {
@@ -69,4 +74,4 @@ export const user = createSlice({
     });
   },
 });
-export const { logout } = user.actions;
+export const { logout,showBox } = user.actions;
