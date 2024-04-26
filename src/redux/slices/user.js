@@ -41,7 +41,6 @@ export const user = createSlice({
     // For Admin Pages
     allUsers: [],
     allTransactions: [],
-    Loading: false,
   },
   reducers: {
     logout: (state, action) => {
@@ -64,16 +63,10 @@ export const user = createSlice({
       state.transactions = action.payload.transactions;
       state.isTransFetched = true;
     });
-    builder
-      .addCase(fetchData.pending, (state) => {
-        state.Loading = true;
-      })
-      .addCase(fetchData.fulfilled, (state, action) => {
-        toast.success(action.payload.message);
-        state.allUsers = action.payload.users;
-        state.allTransactions = action.payload.transactions;
-        state.Loading = false;
-      });
+    builder.addCase(fetchData.fulfilled, (state, action) => {
+      state.allUsers = action.payload.users;
+      state.allTransactions = action.payload.transactions;
+    });
   },
 });
 export const { logout } = user.actions;

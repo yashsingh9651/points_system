@@ -9,12 +9,16 @@ export async function PUT(request) {
     const { email, _id } = await request.json();
     const admin = await User.findOne({ email });
     if (admin.isAdmin) {
-      const transaction = await Transaction.findByIdAndUpdate(_id, {
-        status: "Approved",
-      });
+      const transaction = await Transaction.findById(_id);
+      if (transaction.status === "pending") {
+        transaction.status = "approved";
+        transaction.save();
+      } else {
+        transaction.status = "pending";
+        transaction.save();
+      }
       return NextResponse.json({
         success: true,
-        transaction,
         message: "Transaction Approved Successfully",
       });
     }

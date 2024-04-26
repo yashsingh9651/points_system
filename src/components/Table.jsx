@@ -1,13 +1,24 @@
 "use cient";
 import { Card, Typography } from "@material-tailwind/react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
+import toast from "react-hot-toast";
+import { useState } from "react";
+import { fetchData } from "@/redux/slices/user";
 
 const Table = ({ data, tableHead, type }) => {
+  const dispatch = useDispatch();
   const { email } = useSelector((state) => state.user.userData);
-  const loading = useSelector((state) => state.user.loading);
+  const [loading, setLoading] = useState(false);
+  // Updating the transation status for
   const updateStatus = async (_id) => {
-    await axios.put("/api/admin/updateTrans", { email, _id });
+    setLoading(true);
+    const res = await axios.put("/api/admin/updateTrans", { email, _id });
+    if (res.data.success) {
+      dispatch(fetchData(email));
+    }
+    toast.success(res.data.message);
+    setLoading(false);
   };
   if (type === "USERS") {
     return (
