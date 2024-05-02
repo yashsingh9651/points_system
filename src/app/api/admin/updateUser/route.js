@@ -16,7 +16,7 @@ export async function PUT(request) {
     }
     return NextResponse.json({
       success: false,
-      message: "Only Admin access is allowed",
+      error: "Only Admin access is allowed",
     });
   } catch (error) {
     return NextResponse.json({ error: error.message });

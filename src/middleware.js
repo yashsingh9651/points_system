@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
+
 export async function middleware(request) {
   const path = request.nextUrl.pathname;
-  const adminPath = path.slice(0,6) === "/admin" || path.slice(0, 7) === "/studio";
+  const adminPath =
+    path.slice(0, 6) === "/admin" || path.slice(0, 7) === "/studio";
   const isPublicPath =
     path === "/login" ||
     path === "/signup" ||
@@ -12,11 +14,9 @@ export async function middleware(request) {
   // Admin Role Protected Route
   function getJwtSecretKey() {
     const secret = process.env.JWT_SECRET;
-
     if (!secret) {
       throw new Error("JWT Secret key is not matched");
     }
-
     return new TextEncoder().encode(secret);
   }
   if (token && adminPath) {

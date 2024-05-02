@@ -23,7 +23,7 @@ export async function POST(request) {
 
     return NextResponse.json({
       success: false,
-      message: "Only Admin Access is Allowed",
+      error: "Only Admin Access is Allowed",
     });
   } catch (error) {
     return NextResponse.json({ error: error.message });

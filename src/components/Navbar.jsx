@@ -60,6 +60,18 @@ export function StickyNavbar() {
           color="blue-gray"
           className="p-1 font-normal"
         >
+          <Link href="/admin/CreditPoints" className="flex items-center">
+            Credit Points
+          </Link>
+        </Typography>
+      )}
+      {userData?.isAdmin && (
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
           <Link href="/admin" className="flex items-center">
             Admin
           </Link>
