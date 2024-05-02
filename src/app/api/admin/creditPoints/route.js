@@ -1,4 +1,5 @@
 import { connect } from "@/dbConfig/dbConfig";
+import { sendMail } from "@/helpers/mailer";
 import Transaction from "@/models/transModel";
 import User from "@/models/userModel";
 import { NextResponse } from "next/server";
@@ -17,9 +18,15 @@ export async function POST(request) {
         status: "approved",
       });
       const user = await User.findOne({ email });
-      user.points += amount;
+      user.points += Number(amount);
       await user.save();
       await newTransaction.save();
+      await sendMail({
+        email,
+        emailType: "CREDIT",
+        amount,
+        name: username,
+      });
       return NextResponse.json({
         success: true,
         message: "Points Added to User's Account Successfully",

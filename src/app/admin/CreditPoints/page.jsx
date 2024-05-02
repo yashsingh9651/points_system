@@ -3,16 +3,14 @@ import { fetchData } from "@/redux/slices/user";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
-import toast from "react-hot-toast"
+import toast from "react-hot-toast";
 
 const page = () => {
   const dispatch = useDispatch();
   const { email } = useSelector((state) => state.user.userData);
   const allUsers = useSelector((state) => state.user.allUsers);
   useEffect(() => {
-    if (allUsers?.length === 0) {
-      dispatch(fetchData(email));
-    }
+    dispatch(fetchData(email));
   }, [email]);
   // Crediting the points by sending data requests
   const [values, setValues] = useState({ email: "", amount: 0, username: "" });
@@ -20,14 +18,16 @@ const page = () => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
   // Sending the data to the server
-  const handleSubmit =async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await axios.post("/api/admin/creditPoints",{...values,adminEmail:email}); 
-    console.log(res.data);
+    const res = await axios.post("/api/admin/creditPoints", {
+      ...values,
+      adminEmail: email,
+    });
     if (res.data.success) {
       toast.success(res.data.message);
-      setValues({ email: "", amount: 0, username: "" })
-    }else{
+      setValues({ email: "", amount: 0, username: "" });
+    } else {
       toast.error(res.data.error);
     }
   };

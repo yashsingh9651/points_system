@@ -2,20 +2,8 @@ import nodemailer from "nodemailer";
 import User from "@/models/userModel";
 import bcryptjs from "bcryptjs";
 
-export const sendMail = async ({ email, emailType, userId, name }) => {
+export const sendMail = async ({ email, emailType, userId, name,amount }) => {
   try {
-    const hashedToken = await bcryptjs.hash(userId.toString(), 10);
-    if (emailType === "VERIFY") {
-      await User.findByIdAndUpdate(userId, {
-        verifyToken: hashedToken,
-        verifyTokenExpiry: Date.now() + 3600000,
-      });
-    } else if (emailType === "RESET") {
-      await User.findByIdAndUpdate(userId, {
-        forgotPasswordToken: hashedToken,
-        forgotPasswordTokenExpiry: Date.now() + 3600000,
-      });
-    }
     const transport = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
@@ -27,14 +15,27 @@ export const sendMail = async ({ email, emailType, userId, name }) => {
         pass: process.env.NODE_PASS,
       },
     });
-    const mailOptions = {
-      from: { name: "Akanksha Enterprises", address: process.env.NODE_USER },
-      to: email,
-      subject: `${
-        emailType === "VERIFY" ? "Verify your email" : "Reset your Password"
-      }`,
-      // add your domain to .env file as DOMAIN
-      html: `<div style="font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; margin-bottom: 10px;">
+    if (emailType !== "CREDIT") {
+      const hashedToken = await bcryptjs.hash(userId.toString(), 10);
+      if (emailType === "VERIFY") {
+        await User.findByIdAndUpdate(userId, {
+          verifyToken: hashedToken,
+          verifyTokenExpiry: Date.now() + 3600000,
+        });
+      } else if (emailType === "RESET") {
+        await User.findByIdAndUpdate(userId, {
+          forgotPasswordToken: hashedToken,
+          forgotPasswordTokenExpiry: Date.now() + 3600000,
+        });
+      }
+      const mailOptions = {
+        from: { name: "Akanksha Enterprises", address: process.env.NODE_USER },
+        to: email,
+        subject: `${
+          emailType === "VERIFY" ? "Verify your email" : "Reset your Password"
+        }`,
+        // add your domain to .env file as DOMAIN
+        html: `<div style="font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; margin-bottom: 10px;">
       </div>
       <img src="https://res.cloudinary.com/dbiavtnwu/image/upload/kesnpod4krlould2r7uk.jpg" alt="Akanksha Enterprises Logo" style="display: block; margin: 0 auto; max-width: 100px; margin-bottom: 20px;">
       <p style="color: #666666; margin-bottom: 20px;">Hello ${name},</p>
@@ -46,19 +47,38 @@ export const sendMail = async ({ email, emailType, userId, name }) => {
       <p style="color: #666666; margin-bottom: 20px;">Click <a href="${
         process.env.DOMAIN
       }/${
-        emailType === "VERIFY" ? "verifyemail" : "resetPass/verify"
-      }?token=${hashedToken}" style="color: #007bff;">here</a> to ${
-        emailType === "VERIFY" ? "verify your email" : "reset your password"
-      } or copy and paste the link to your browser.</p>
+          emailType === "VERIFY" ? "verifyemail" : "resetPass/verify"
+        }?token=${hashedToken}" style="color: #007bff;">here</a> to ${
+          emailType === "VERIFY" ? "verify your email" : "reset your password"
+        } or copy and paste the link to your browser.</p>
       <p style="color: #666666; margin-bottom: 20px;">${process.env.DOMAIN}/${
-        emailType === "VERIFY" ? "verifyemail" : "resetPass/verify"
-      }?token=${hashedToken}</p>
+          emailType === "VERIFY" ? "verifyemail" : "resetPass/verify"
+        }?token=${hashedToken}</p>
       <p style="color: #666666; margin-bottom: 20px;">Yours Truly,</p>
       <p style="color: #666666; margin-bottom: 20px;">Akanksha Enterprises</p>
       </div>`,
-    };
-    const mailResponse = await transport.sendMail(mailOptions);
-    return mailResponse;
+      };
+      const mailResponse = await transport.sendMail(mailOptions);
+      return mailResponse;
+    } else {
+      const creditMailOptions = {
+        from: { name: "Akanksha Enterprises", address: process.env.NODE_USER },
+        to: email,
+        subject: "Credit Points",
+        // add your domain to .env file as DOMAIN
+        html: `<div style="font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; margin-bottom: 10px;">
+        </div>
+        <img src="https://res.cloudinary.com/dbiavtnwu/image/upload/kesnpod4krlould2r7uk.jpg" alt="Akanksha Enterprises Logo" style="display: block; margin: 0 auto; max-width: 100px; margin-bottom: 20px;">
+        <p style="color: #666666; margin-bottom: 20px;">Hello ${name},</p>
+        <p style="color: #666666; margin-bottom: 20px;">Thanks for the purchase. You have been credited with ${amount} points.</p>
+        <p style="color: #666666; margin-bottom: 20px;"></p>
+        <p style="color: #666666; margin-bottom: 20px;">Yours Truly,</p>
+        <p style="color: #666666; margin-bottom: 20px;">Akanksha Enterprises</p>
+        </div>`,
+      };
+      const creditMail = await transport.sendMail(creditMailOptions);
+      return creditMail;
+    }
   } catch (error) {
     throw new Error(error.message);
   }
