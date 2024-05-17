@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
       <html lang="en">
         <body
           suppressHydrationWarning={true}
-          className="font-Ubuntu scroll-smooth"
+          className="font-Ubuntu scroll-smooth w-screen overflow-x-hidden"
         >
           <Toaster />
           <StickyNavbar />

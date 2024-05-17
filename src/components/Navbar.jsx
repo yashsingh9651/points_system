@@ -77,6 +77,18 @@ export function StickyNavbar() {
           </Link>
         </Typography>
       )}
+      {userData?.isAdmin && (
+        <Typography
+          as="li"
+          variant="small"
+          color="blue-gray"
+          className="p-1 font-normal"
+        >
+          <Link href="/studio" className="flex items-center">
+            Studio
+          </Link>
+        </Typography>
+      )}
       <Typography
         as="li"
         variant="small"
