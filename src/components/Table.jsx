@@ -164,6 +164,15 @@ const Table = ({ data, tableHead, type }) => {
                     </Typography>
                   </td>
                   <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {user.type}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
                     <div
                       className={`${
                         user.status === "pending"
@@ -175,7 +184,7 @@ const Table = ({ data, tableHead, type }) => {
                     </div>
                   </td>
                   <td className={classes}>
-                    <button
+                    {user.type!=="CREDIT"&&<button
                       onClick={() => updateStatus(user._id)}
                       disabled={loading}
                       variant="small"
@@ -183,7 +192,7 @@ const Table = ({ data, tableHead, type }) => {
                       className="font-medium w-full text-center bg-gray-500 py-2 hover:scale-105 duration-300 text-white rounded-md cursor-pointer"
                     >
                       {user.status === "pending" ? "Approve" : "Reject"}
-                    </button>
+                    </button>}
                   </td>
                 </tr>
               );

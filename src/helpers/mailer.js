@@ -68,7 +68,7 @@ export const sendMail = async ({ email, emailType, userId, name,amount }) => {
         // add your domain to .env file as DOMAIN
         html: `<div style="font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; margin-bottom: 10px;">
         </div>
-        <img src="https://res.cloudinary.com/dbiavtnwu/image/upload/kesnpod4krlould2r7uk.jpg" alt="Akanksha Enterprises Logo" style="display: block; margin: 0 auto; max-width: 100px; margin-bottom: 20px;">
+        <img src="https://res.cloudinary.com/dbiavtnwu/image/upload/v1715920371/ddxo7znn53edyn2tj0na.png" alt="Akanksha Enterprises Logo" style="display: block; margin: 0 auto; max-width: 100px; margin-bottom: 20px;">
         <p style="color: #666666; margin-bottom: 20px;">Hello ${name},</p>
         <p style="color: #666666; margin-bottom: 20px;">Thanks for the purchase. You have been credited with ${amount} points.</p>
         <p style="color: #666666; margin-bottom: 20px;"></p>

@@ -11,7 +11,7 @@ const page = () => {
   const users = useSelector((state) => state.user.allUsers);
   const transactions = useSelector((state) => state.user.allTransactions);
   const usersHead = ["Name", "Occupation", "Points", "Email", ""];
-  const transHead = ["username", "Email", "Amount", "Status", ""];
+  const transHead = ["username", "Email", "Amount","Type", "Status", ""];
   useEffect(() => {
     dispatch(fetchData(email));
   }, [email]);
