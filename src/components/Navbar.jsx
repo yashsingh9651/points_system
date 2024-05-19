@@ -47,57 +47,85 @@ export function StickyNavbar() {
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal xl:hidden"
+        className="p-1 font-normal hover:scale-110 duration-100 xl:hidden"
       >
-        <Link href="/profile" className="flex items-center">
-          Profile
-        </Link>
+        <Link href="/profile">Profile</Link>
       </Typography>
       {userData?.isAdmin && (
-        <Typography
-          as="li"
-          variant="small"
-          color="blue-gray"
-          className="p-1 font-normal"
-        >
-          <Link href="/admin/CreditPoints" className="flex items-center">
-            Credit Points
-          </Link>
-        </Typography>
-      )}
-      {userData?.isAdmin && (
-        <Typography
-          as="li"
-          variant="small"
-          color="blue-gray"
-          className="p-1 font-normal"
-        >
-          <Link href="/admin" className="flex items-center">
-            Admin
-          </Link>
-        </Typography>
-      )}
-      {userData?.isAdmin && (
-        <Typography
-          as="li"
-          variant="small"
-          color="blue-gray"
-          className="p-1 font-normal"
-        >
-          <Link href="/studio" className="flex items-center">
-            Studio
-          </Link>
-        </Typography>
+        <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-6">
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/admin">Admin</Link>
+          </Typography>
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/admin/inventory">Inventory</Link>
+          </Typography>
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/admin/newBill">new Bill</Link>
+          </Typography>
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/admin/billHis">Bill History</Link>
+          </Typography>
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/admin/restock">Restock</Link>
+          </Typography>
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/admin/restockHis">Restock History</Link>
+          </Typography>
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/admin/creditPoints">Credit Points</Link>
+          </Typography>
+          <Typography
+            as="li"
+            variant="small"
+            color="blue-gray"
+            className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
+          >
+            <Link href="/studio">Studio</Link>
+          </Typography>
+        </div>
       )}
       <Typography
         as="li"
         variant="small"
         color="blue-gray"
-        className="p-1 font-normal xl:hidden"
+        className="p-1 font-normal hover:scale-110 duration-100 xl:hidden"
       >
-        <Link href="/transactions" className="flex items-center">
-          Transactions
-        </Link>
+        <Link href="/transactions">Transactions</Link>
       </Typography>
     </ul>
   );
@@ -122,7 +150,7 @@ export function StickyNavbar() {
           <h1>Akanksha Enterprises</h1>
         </Link>
         <div className="flex items-center gap-4">
-          <div className="mr-4 hidden lg:block">{navList}</div>
+          <div className="hidden lg:block">{navList}</div>
           {!isLogedIn ? (
             <div className="flex items-center gap-x-1">
               <Link href="login">
@@ -145,13 +173,12 @@ export function StickyNavbar() {
               </Link>
             </div>
           ) : (
-            <Button
+            <button
               onClick={() => handleLogout()}
-              className="hidden lg:inline-block"
-              fullWidth
+              className="hidden lg:inline-block bg-blue-gray-900 text-white px-5 py-2 rounded-md hover:scale-105 focus:bg-blue-gray-800 active:bg-blue-gray-800 duration-200"
             >
               Log out
-            </Button>
+            </button>
           )}
           <IconButton
             variant="text"
