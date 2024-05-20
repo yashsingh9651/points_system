@@ -8,7 +8,7 @@ import { fetchData, showBox } from "@/redux/slices/user";
 
 const Table = ({ data, tableHead, type }) => {
   const { email } = useSelector((state) => state.user.userData);
-  // Updating the transation status for
+  // Updating the transation status 
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const updateStatus = async (_id) => {
@@ -91,7 +91,15 @@ const Table = ({ data, tableHead, type }) => {
                     <Typography
                       color="blue-gray"
                       onClick={() =>
-                        dispatch(showBox({email,username:user.username,occupation:user.occupation,userEmail:user.email,_id:user._id}))
+                        dispatch(
+                          showBox({
+                            email,
+                            username: user.username,
+                            occupation: user.occupation,
+                            userEmail: user.email,
+                            _id: user._id,
+                          })
+                        )
                       }
                       className="font-medium text-center px-4 cursor-pointer hover:scale-105 duration-300 bg-gray-400 py-2 rounded-md"
                     >
@@ -105,7 +113,7 @@ const Table = ({ data, tableHead, type }) => {
         </table>
       </Card>
     );
-  } else {
+  } else if (type === "TRANSACTIONS") {
     return (
       <Card className="h-full w-full xl:w-4/5 mx-auto overflow-scroll">
         <table className="w-full min-w-max table-auto text-left">
@@ -184,15 +192,82 @@ const Table = ({ data, tableHead, type }) => {
                     </div>
                   </td>
                   <td className={classes}>
-                    {user.type!=="CREDIT"&&<button
-                      onClick={() => updateStatus(user._id)}
-                      disabled={loading}
+                    {user.type !== "CREDIT" && (
+                      <button
+                        onClick={() => updateStatus(user._id)}
+                        disabled={loading}
+                        variant="small"
+                        color="blue-gray"
+                        className="font-medium w-full text-center bg-gray-500 py-2 hover:scale-105 duration-300 text-white rounded-md cursor-pointer"
+                      >
+                        {user.status === "pending" ? "Approve" : "Reject"}
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Card>
+    );
+  } else {
+    return (
+      <Card className="h-full w-full xl:w-4/5 mx-auto overflow-scroll">
+        <table className="w-full min-w-max table-auto text-left">
+          <thead>
+            <tr>
+              {tableHead.map((head) => (
+                <th
+                  key={head}
+                  className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                >
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal text-center leading-none opacity-70"
+                  >
+                    {head}
+                  </Typography>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((user, index) => {
+              const isLast = index === data.length - 1;
+              const classes = isLast
+                ? "p-4"
+                : "p-4 border-b border-blue-gray-50";
+
+              return (
+                <tr key={user._id}>
+                  <td className={classes}>
+                    <Typography
                       variant="small"
                       color="blue-gray"
-                      className="font-medium w-full text-center bg-gray-500 py-2 hover:scale-105 duration-300 text-white rounded-md cursor-pointer"
+                      className="font-normal text-center"
                     >
-                      {user.status === "pending" ? "Approve" : "Reject"}
-                    </button>}
+                      {user.email}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {user.email}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {user.amount}
+                    </Typography>
                   </td>
                 </tr>
               );
