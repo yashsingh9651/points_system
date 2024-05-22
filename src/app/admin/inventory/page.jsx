@@ -14,7 +14,7 @@ const page = () => {
   const productsHead = ["Product Name", "Quantity", "Price", ""];
   const { email } = useSelector((state) => state.user.userData);
   const products = useSelector((state) => state.admin.products);
-  // Adding new product
+  // Adding new product to database
   const [loading, setLoading] = useState(false);
   const form = useRef();
   const { values, handleChange, handleSubmit, errors, touched, handleBlur } =
@@ -49,7 +49,7 @@ const page = () => {
   useEffect(() => {
     dispatch(fetchProducts(email));
   }, [email]);
-  // Searching Product
+  // Searching Products based on input search field
   const [searchProducts, setSearchProducts] = useState([]);
   const handleSearchChange = (e) => {
     const search = e.target.value;

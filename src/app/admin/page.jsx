@@ -11,7 +11,7 @@ const page = () => {
   const users = useSelector((state) => state.admin.allUsers);
   const transactions = useSelector((state) => state.admin.allTransactions);
   const usersHead = ["Name", "Occupation", "Points", "Email", ""];
-  const transHead = ["username", "Email", "Amount","Type", "Status", ""];
+  const transHead = ["username", "Email", "Amount", "Type", "Status", ""];
   useEffect(() => {
     dispatch(fetchUsers(email));
     dispatch(fetchTransactions(email));
@@ -19,7 +19,7 @@ const page = () => {
 
   return (
     <div className="lg:pt-24 pt-16 px-4 lg:px-10 relative pb-8">
-      {showBox&&<UpdateBox/>}
+      {showBox && <UpdateBox />}
       <h1 className="text-2xl font-medium font-Ubuntu text-center mb-4">
         All Users Details
       </h1>

@@ -14,7 +14,7 @@ export const fetchTransactions = createAsyncThunk("fetchTransactions", async (ad
 });
 // Fetching Products
 export const fetchProducts = createAsyncThunk("fetchProducts", async (adminEmail) => {
-  const response = await axios.post("/api/admin/product/getProducts", { adminEmail });
+  const response = await axios.post("/api/admin/product", { adminEmail });
   return response.data;
 });
 

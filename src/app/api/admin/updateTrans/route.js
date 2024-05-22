@@ -13,14 +13,18 @@ export async function PUT(request) {
       if (transaction.status === "pending") {
         transaction.status = "approved";
         transaction.save();
+        return NextResponse.json({
+          success: true,
+          message: "Transaction Approved Successfully",
+        });
       } else {
         transaction.status = "pending";
         transaction.save();
+        return NextResponse.json({
+          success: true,
+          message: "Transaction Rejected Successfully",
+        });
       }
-      return NextResponse.json({
-        success: true,
-        message: "Transaction Approved Successfully",
-      });
     }
     return NextResponse.json({
       success: false,
