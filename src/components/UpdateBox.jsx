@@ -2,11 +2,12 @@
 import React, { useState } from "react";
 import { Input, Typography, Button } from "@material-tailwind/react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchData, showBox } from "@/redux/slices/user";
+import { fetchUsers, showBox } from "@/redux/slices/admin";
 import toast from "react-hot-toast";
 import axios from "axios";
 const UpdateBox = () => {
-  const boxdetails = useSelector((state) => state.user.boxdetails);
+  // Updating User Details
+  const boxdetails = useSelector((state) => state.admin.boxdetails);
   const dispatch = useDispatch();
   const [username, setUsername] = useState(boxdetails?.username);
   const [occupation, setOccupation] = useState(boxdetails?.occupation);
@@ -18,7 +19,7 @@ const UpdateBox = () => {
       occupation,
     });
     if (res.data.success) {
-      dispatch(fetchData(email));
+      dispatch(fetchUsers(email));
       toast.success(res.data.message);
       dispatch(showBox());
     } else {

@@ -2,18 +2,19 @@
 import Table from "@/components/Table";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchData } from "@/redux/slices/user";
 import UpdateBox from "@/components/UpdateBox";
+import { fetchTransactions, fetchUsers } from "@/redux/slices/admin";
 const page = () => {
   const dispatch = useDispatch();
-  const showBox = useSelector((state) => state.user.showBox);
   const { email } = useSelector((state) => state.user.userData);
-  const users = useSelector((state) => state.user.allUsers);
-  const transactions = useSelector((state) => state.user.allTransactions);
+  const showBox = useSelector((state) => state.admin.showBox);
+  const users = useSelector((state) => state.admin.allUsers);
+  const transactions = useSelector((state) => state.admin.allTransactions);
   const usersHead = ["Name", "Occupation", "Points", "Email", ""];
   const transHead = ["username", "Email", "Amount","Type", "Status", ""];
   useEffect(() => {
-    dispatch(fetchData(email));
+    dispatch(fetchUsers(email));
+    dispatch(fetchTransactions(email));
   }, [email]);
 
   return (

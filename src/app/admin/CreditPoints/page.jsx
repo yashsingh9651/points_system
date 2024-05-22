@@ -1,5 +1,5 @@
 "use client";
-import { fetchData } from "@/redux/slices/user";
+import { fetchUsers } from "@/redux/slices/admin";
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
@@ -8,9 +8,9 @@ import toast from "react-hot-toast";
 const page = () => {
   const dispatch = useDispatch();
   const { email } = useSelector((state) => state.user.userData);
-  const allUsers = useSelector((state) => state.user.allUsers);
+  const allUsers = useSelector((state) => state.admin.allUsers);
   useEffect(() => {
-    dispatch(fetchData(email));
+    dispatch(fetchUsers(email));
   }, [email]);
   // Crediting the points by sending data requests
   const [values, setValues] = useState({ email: "", amount: 0, username: "" });

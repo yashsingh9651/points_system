@@ -1,18 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import toast from "react-hot-toast";
-// Fetching users and transaction for Admin
-export const fetchData = createAsyncThunk("fetchData", async (email) => {
-  const response = await axios.post("/api/admin", { email });
-  return response.data;
-});
-// Fetching UserData
+// Fetching UserData for user
 export const fetchUserData = createAsyncThunk("fetchUserData", async () => {
   const response = await axios.get("/api/users/userData");
   return response.data;
 });
 
-// Adding Transcations
+// Adding Transcations for user
 export const addTranscations = createAsyncThunk(
   "addTranscations",
   async (data) => {
@@ -20,7 +15,7 @@ export const addTranscations = createAsyncThunk(
     return response.data;
   }
 );
-// Fetch transactions
+// Fetch transactions for user
 export const getTransactions = createAsyncThunk(
   "getTransactions",
   async (data) => {
@@ -37,19 +32,10 @@ export const user = createSlice({
     isTransFetched: false,
     userData: {},
     transactions: [],
-    // For Admin Pages
-    allUsers: [],
-    allTransactions: [],
-    showBox: false,
-    boxdetails:{},
   },
   reducers: {
     logout: (state, action) => {
       state.isLogedIn = action.payload;
-    },
-    showBox: (state,action) => {
-      state.showBox = !state.showBox;
-      state.boxdetails = action?.payload;
     },
   },
   extraReducers: (builder) => {
@@ -68,10 +54,6 @@ export const user = createSlice({
       state.transactions = action.payload.transactions;
       state.isTransFetched = true;
     });
-    builder.addCase(fetchData.fulfilled, (state, action) => {
-      state.allUsers = action.payload.users;
-      state.allTransactions = action.payload.transactions;
-    });
   },
 });
-export const { logout,showBox } = user.actions;
+export const { logout } = user.actions;

@@ -4,18 +4,18 @@ import { useSelector, useDispatch } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
-import { fetchData, showBox } from "@/redux/slices/user";
+import { fetchTransactions, showBox } from "@/redux/slices/admin";
 
 const Table = ({ data, tableHead, type }) => {
   const { email } = useSelector((state) => state.user.userData);
-  // Updating the transation status 
+  // Updating the transation status
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const updateStatus = async (_id) => {
     setLoading(true);
     const res = await axios.put("/api/admin/updateTrans", { email, _id });
     if (res.data.success) {
-      dispatch(fetchData(email));
+      dispatch(fetchTransactions(email));
     }
     toast.success(res.data.message);
     setLoading(false);
@@ -211,7 +211,7 @@ const Table = ({ data, tableHead, type }) => {
         </table>
       </Card>
     );
-  } else {
+  } else if (type === "PRODUCTS") {
     return (
       <Card className="h-full w-full xl:w-4/5 mx-auto overflow-scroll">
         <table className="w-full min-w-max table-auto text-left">
@@ -234,21 +234,21 @@ const Table = ({ data, tableHead, type }) => {
             </tr>
           </thead>
           <tbody>
-            {data?.map((user, index) => {
+            {data?.map((product, index) => {
               const isLast = index === data.length - 1;
               const classes = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";
 
               return (
-                <tr key={user._id}>
+                <tr key={product._id}>
                   <td className={classes}>
                     <Typography
                       variant="small"
                       color="blue-gray"
                       className="font-normal text-center"
                     >
-                      {user.email}
+                      {product.name}
                     </Typography>
                   </td>
                   <td className={classes}>
@@ -257,7 +257,7 @@ const Table = ({ data, tableHead, type }) => {
                       color="blue-gray"
                       className="font-normal text-center"
                     >
-                      {user.email}
+                      {product.quantity}
                     </Typography>
                   </td>
                   <td className={classes}>
@@ -266,7 +266,54 @@ const Table = ({ data, tableHead, type }) => {
                       color="blue-gray"
                       className="font-normal text-center"
                     >
-                      {user.amount}
+                      {product.price}
+                    </Typography>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Card>
+    );
+  } else {
+    return (
+      <Card className="h-full w-full xl:w-4/5 mx-auto overflow-scroll">
+        <table className="w-full min-w-max table-auto text-left">
+          <tbody>
+            {data?.map((product, index) => {
+              const isLast = index === data.length - 1;
+              const classes = isLast
+                ? "p-4"
+                : "p-4 border-b border-blue-gray-50";
+
+              return (
+                <tr key={product._id}>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.name}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.quantity}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.price}
                     </Typography>
                   </td>
                 </tr>
