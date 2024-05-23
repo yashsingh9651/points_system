@@ -23,7 +23,11 @@ export const admin = createSlice({
   initialState: {
     allUsers: [],
     allTransactions: [],
+    showAddToListBox:false,
+    addToListboxdetail:{},
     products: [],
+    billProdList: [],
+    subTotal:0,
     showBox: false,
     boxdetails:{},
   },
@@ -32,6 +36,19 @@ export const admin = createSlice({
       state.showBox = !state.showBox;
       state.boxdetails = action?.payload;
     },
+    addToList:(state, action) => {
+      state.billProdList.push(action.payload);
+      state.showAddToListBox = false;
+      let total =0;
+      state.billProdList.forEach((prod) => {
+        total += (Number(prod.quantity) * Number(prod.price))
+      });
+      state.subTotal = total;
+    },
+    showAddToListBox:(state,action) => {
+      state.showAddToListBox = !state.showAddToListBox
+      state.addToListboxdetail= action?.payload
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
@@ -46,4 +63,4 @@ export const admin = createSlice({
   },
 });
 
-export const {showBox}= admin.actions;
+export const {showBox,addToList,showAddToListBox}= admin.actions;

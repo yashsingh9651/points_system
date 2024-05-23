@@ -2,7 +2,7 @@
 import Table from "@/components/Table";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import UpdateBox from "@/components/UpdateBox";
+import UpdateBox from "@/components/UserUpdateBox";
 import { fetchTransactions, fetchUsers } from "@/redux/slices/admin";
 const page = () => {
   const dispatch = useDispatch();

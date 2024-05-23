@@ -11,7 +11,6 @@ import { fetchProducts } from "@/redux/slices/admin";
 import Loading from "@/components/Loading";
 
 const page = () => {
-  const productsHead = ["Product Name", "Quantity", "Price", ""];
   const { email } = useSelector((state) => state.user.userData);
   const products = useSelector((state) => state.admin.products);
   // Adding new product to database
@@ -74,11 +73,12 @@ const page = () => {
         className="lg:w-3/4 p-2 border-gray-500 border rounded-md"
         placeholder="Search by Product Name"
       />
+      {/* Product list */}
       <div className="relative bg-white z-20 w-full -mt-4">
         <div className="absolute w-full top-0 left-0">
           <Table
             data={searchProducts}
-            tableHead={productsHead}
+            tableHead={[]}
             type={"SEARCH"}
           />
         </div>
@@ -175,7 +175,7 @@ const page = () => {
       <h1 className="text-2xl font-medium font-Ubuntu text-center">
         Current Stock
       </h1>
-      <Table data={products} tableHead={productsHead} type={"PRODUCTS"} />
+      <Table data={products} tableHead={["Product Name", "Quantity", "Price", ""]} type={"PRODUCTS"} />
     </div>
   );
 };
