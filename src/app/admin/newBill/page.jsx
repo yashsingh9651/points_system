@@ -1,56 +1,53 @@
 "use client";
 import Table from "@/components/Table";
-import { fetchProducts } from "@/redux/slices/admin";
-import React, { useEffect, useState } from "react";
+import { fetchProducts, searchProductsList } from "@/redux/slices/admin";
+import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import AddToListBox from "@/components/AddToListBox";
+import { useReactToPrint } from "react-to-print";
 
 const page = () => {
   const { email } = useSelector((state) => state.user.userData);
-  const products = useSelector((state) => state.admin.products);
   const billProdList = useSelector((state) => state.admin.billProdList);
+  const searchedProducts = useSelector((state) => state.admin.searchedProducts);
   const showAddToListBox = useSelector((state) => state.admin.showAddToListBox);
   const subTotal = useSelector((state) => state.admin.subTotal);
+  const pdfRef = useRef();
+  // Converting html page to pdf format and Download pdf...
+  const printPdf = useReactToPrint({
+    content: () => pdfRef.current,
+    documentTitle: `Bill Number-69`,
+  });
   // Fetching All Products
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchProducts(email));
   }, [email]);
-  // Searching products based on search fields
-  const [searchProducts, setSearchProducts] = useState([]);
-  const handleSearchChange = (e) => {
-    const search = e.target.value;
-    if (search.length <= 1 || search == "") {
-      setSearchProducts([]);
-    } else {
-      const filteredProducts = products?.filter((product) =>
-        product.name.toLowerCase().includes(search.toLowerCase())
-      );
-      setSearchProducts(filteredProducts);
-    }
-  };
   return (
     <div className="pt-16 lg:pt-24 px-6 flex flex-col gap-5 items-center">
-      {showAddToListBox&&<AddToListBox />}
+      {showAddToListBox && <AddToListBox />}
       {/* Search Produt Section */}
       <h1 className="text-2xl font-medium font-Ubuntu text-center">
         Search a Product
       </h1>
       <input
-        onChange={handleSearchChange}
+        onChange={(e) => dispatch(searchProductsList(e.target.value))}
         type="text"
         className="lg:w-3/4 p-2 border-gray-500 border rounded-md"
         placeholder="Search by Product Name"
       />
-      {/* Product list */}
+      {/* Searched Product list */}
       <div className="relative bg-white z-20 w-full -mt-4">
         <div className="absolute w-full top-0 left-0">
-          <Table data={searchProducts} tableHead={[]} type={"NEWBILL"} />
+          <Table data={searchedProducts} tableHead={[]} type={"NEWBILL"} />
         </div>
       </div>
       {/* Bill */}
-      <div className="bg-gray-200 w-4/5 rounded p-4 flex flex-col gap-4">
+      <div
+        ref={pdfRef}
+        className="bg-gray-200 w-full rounded p-5 flex flex-col gap-4"
+      >
         {/* Heading LOGO */}
         <div className="mx-auto max-w-fit font-semibold text-lg lg:text-xl flex gap-2 items-center">
           <Image
@@ -70,7 +67,7 @@ const page = () => {
               type="text"
               name="name"
               autoFocus="true"
-              className="lg:w-3/4 p-1 text-lg border-none border rounded-md"
+              className="lg:w-3/4 bg-transparent focus:outline outline-black p-1 text-lg border-none border rounded-md"
               placeholder="Enter Customer Name"
             />
           </div>
@@ -78,16 +75,25 @@ const page = () => {
           <h1>Bill Number : 69</h1>
         </div>
         {/* Products List */}
-        <Table data={billProdList} tableHead={["Product Name", "Quantity", "Price", "Total",""]} type={"BILLINGLIST"} />
-        <h1 className="max-w-fit self-end text-lg font-medium">SubTotal: ₹ {subTotal}</h1>
-        <div className="flex justify-end gap-5">
-          <button className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md">
-            Generate Bill
-          </button>
-          <button className="bg-red-500 hover:bg-red-700 hover:scale-105 duration-200 text-white px-4 py-2 rounded-md">
-            Print Bill
-          </button>
-        </div>
+        <Table
+          data={billProdList}
+          tableHead={["Product Name", "Quantity", "Price", "Total", ""]}
+          type={"BILLINGLIST"}
+        />
+        <h1 className="max-w-fit self-end text-lg font-medium">
+          SubTotal: ₹ {subTotal}
+        </h1>
+      </div>
+      <div className="flex justify-end gap-5 w-full">
+        <button className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md">
+          Generate Bill
+        </button>
+        <button
+          onClick={() => printPdf()}
+          className="bg-red-500 hover:bg-red-700 hover:scale-105 duration-200 text-white px-4 py-2 rounded-md"
+        >
+          Print Bill
+        </button>
       </div>
     </div>
   );

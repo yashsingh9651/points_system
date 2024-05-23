@@ -7,7 +7,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import { useState } from "react";
 import {
+  calSubTotal,
   fetchTransactions,
+  removeProdFromBillProdList,
   showAddToListBox,
   showBox,
 } from "@/redux/slices/admin";
@@ -397,8 +399,20 @@ const Table = ({ data, tableHead, type }) => {
                     </Typography>
                   </td>
                   <div className={`${classes} flex justify-between text-lg`}>
-                    <FaEdit className="text-green-800"/>
-                    <MdDelete className="text-red-600"/>
+                    <FaEdit
+                      onClick={() => {
+                        dispatch(removeProdFromBillProdList(product._id));
+                        dispatch(showAddToListBox(product));
+                      }}
+                      className="text-green-800 hover:scale-125 duration-150 cursor-pointer"
+                    />
+                    <MdDelete
+                      onClick={() => {
+                        dispatch(removeProdFromBillProdList(product._id));
+                        dispatch(calSubTotal());
+                      }}
+                      className="text-red-600 hover:scale-125 duration-150 cursor-pointer"
+                    />
                   </div>
                 </tr>
               );
