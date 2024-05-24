@@ -31,7 +31,7 @@ const Page = () => {
           setLoading(false);
           toast.success(res.data.message);
           router.push("/login");
-        }else{
+        } else {
           toast.error(res.data.error);
         }
       },
@@ -100,8 +100,15 @@ const Page = () => {
                 Your Occupation
               </Typography>
               <div className="relative">
-                <select value={values.occupation} className="w-full px-4 py-3 rounded-md bg-white border border-gray-400 focus:!border-t-gray-900" name="occupation" onBlur={handleBlur} onChange={handleChange}>
+                <select
+                  value={values.occupation}
+                  className="w-full px-4 py-3 rounded-md bg-white border border-gray-400 focus:!border-t-gray-900"
+                  name="occupation"
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                >
                   <option value="Businessman">Businessman</option>
+                  <option value="Businessman">Customer</option>
                   <option value="Painter">Painter</option>
                   <option value="Plumber">Plumber</option>
                 </select>
@@ -146,7 +153,10 @@ const Page = () => {
             )}
             <Typography color="gray" className="mt-4 text-center font-normal">
               Already have an account?{" "}
-              <Link href="/login" className="font-medium hover:underline text-gray-900">
+              <Link
+                href="/login"
+                className="font-medium hover:underline text-gray-900"
+              >
                 Log In
               </Link>
             </Typography>

@@ -43,6 +43,7 @@ const UpdateBox = () => {
           <option value="Businessman">Businessman</option>
           <option value="Painter">Painter</option>
           <option value="Plumber">Plumber</option>
+          <option value="Plumber">Customer</option>
         </select>
         <Typography variant="h6" color="blue-gray" className="-mb-3">
           User's Name

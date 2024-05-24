@@ -25,7 +25,14 @@ export const fetchProducts = createAsyncThunk(
     return response.data;
   }
 );
-
+// Adding Products to Bill Products Database...
+export const generateBill = createAsyncThunk(
+  "generateBill",
+  async (data) => {
+    const response = await axios.post("/api/admin/newBill", data);
+    return response.data;
+  }
+);
 export const admin = createSlice({
   name: "admin",
   initialState: {
@@ -40,16 +47,32 @@ export const admin = createSlice({
     subTotal: 0,
     showBox: false,
     boxdetails: {},
+    billNumber: 0,
+    date: "",
   },
   reducers: {
+    newBillNumber: (state) => {
+      state.billNumber = `Bill-${Date.now()}`;
+      const date = new Date();
+      const day = date.getDate();
+      const month = date.toLocaleString("default", { month: "long" });
+      const year = date.getFullYear();
+      state.date = `${day} ${month} ${year}`;
+    },
     showBox: (state, action) => {
       state.showBox = !state.showBox;
       state.boxdetails = action?.payload;
     },
     addToList: (state, action) => {
-      state.billProdList.push(action.payload);
+      const { name, price, quantity } = action.payload;
+      state.billProdList.push({
+        name,
+        price,
+        quantity,
+        billNumber: state.billNumber,
+      });
       state.showAddToListBox = false;
-      state.searchedProducts=[]
+      state.searchedProducts = [];
       let total = 0;
       state.billProdList.forEach((prod) => {
         total += Number(prod.quantity) * Number(prod.price);
@@ -99,6 +122,10 @@ export const admin = createSlice({
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.products = action.payload.products;
     });
+    builder.addCase(generateBill.fulfilled, (state, action) => {
+      state.billProdList = [];
+      state.subTotal=0;
+    });
   },
 });
 
@@ -109,4 +136,5 @@ export const {
   removeProdFromBillProdList,
   calSubTotal,
   searchProductsList,
+  newBillNumber,
 } = admin.actions;

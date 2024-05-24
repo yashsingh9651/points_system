@@ -1,27 +1,41 @@
 "use client";
 import Table from "@/components/Table";
-import { fetchProducts, searchProductsList } from "@/redux/slices/admin";
-import React, { useEffect, useRef } from "react";
+import {
+  fetchProducts,
+  fetchUsers,
+  generateBill,
+  newBillNumber,
+  searchProductsList,
+} from "@/redux/slices/admin";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import AddToListBox from "@/components/AddToListBox";
 import { useReactToPrint } from "react-to-print";
+import { Typography } from "@material-tailwind/react";
 
 const page = () => {
   const { email } = useSelector((state) => state.user.userData);
   const billProdList = useSelector((state) => state.admin.billProdList);
   const searchedProducts = useSelector((state) => state.admin.searchedProducts);
   const showAddToListBox = useSelector((state) => state.admin.showAddToListBox);
+  const billNumber = useSelector((state) => state.admin.billNumber);
+  const date = useSelector((state) => state.admin.date);
   const subTotal = useSelector((state) => state.admin.subTotal);
-  const pdfRef = useRef();
+  const users = useSelector((state) => state.admin.allUsers);
+  const [customerName, setCustomerName] = useState("");
+  const [broker, setBroker] = useState("");
   // Converting html page to pdf format and Download pdf...
+  const pdfRef = useRef();
   const printPdf = useReactToPrint({
     content: () => pdfRef.current,
     documentTitle: `Bill Number-69`,
   });
-  // Fetching All Products
+  // Fetching All Products and users
   const dispatch = useDispatch();
   useEffect(() => {
+    dispatch(fetchUsers(email));
+    dispatch(newBillNumber());
     dispatch(fetchProducts(email));
   }, [email]);
   return (
@@ -43,6 +57,19 @@ const page = () => {
           <Table data={searchedProducts} tableHead={[]} type={"NEWBILL"} />
         </div>
       </div>
+      <select
+        className="w-full p-3 rounded-md bg-white border border-gray-400 focus:!border-t-gray-900"
+        name="broker"
+        value={broker}
+        onChange={(e) => setBroker(e.target.value)}
+      >
+        <option value="">Select Broker</option>
+        {users?.map((user) => (
+          <option className="flex justify-between" value={user.email}>
+            {user.email}
+          </option>
+        ))}
+      </select>
       {/* Bill */}
       <div
         ref={pdfRef}
@@ -65,14 +92,16 @@ const page = () => {
             <h1>Name :</h1>
             <input
               type="text"
+              value={customerName}
+              onChange={(e) => setCustomerName(e.target.value)}
               name="name"
               autoFocus="true"
               className="lg:w-3/4 bg-transparent focus:outline outline-black p-1 text-lg border-none border rounded-md"
               placeholder="Enter Customer Name"
             />
           </div>
-          <h1>Date : 20 Nov 2023</h1>
-          <h1>Bill Number : 69</h1>
+          <h1>Date : {date}</h1>
+          <h1>{billNumber}</h1>
         </div>
         {/* Products List */}
         <Table
@@ -84,8 +113,24 @@ const page = () => {
           SubTotal: ₹ {subTotal}
         </h1>
       </div>
+      {/* Buttons */}
       <div className="flex justify-end gap-5 w-full">
-        <button className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md">
+        <button
+          onClick={() =>
+            dispatch(
+              generateBill({
+                adminEmail: email,
+                billProdList,
+                billNumber,
+                date,
+                subTotal,
+                customerName,
+                broker
+              })
+            )
+          }
+          className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+        >
           Generate Bill
         </button>
         <button
