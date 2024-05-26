@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import toast from "react-hot-toast";
 
 // Fetching users
 export const fetchUsers = createAsyncThunk("fetchUsers", async (adminEmail) => {
@@ -25,14 +24,6 @@ export const fetchProducts = createAsyncThunk(
     return response.data;
   }
 );
-// Adding Products to Bill Products Database...
-export const generateBill = createAsyncThunk(
-  "generateBill",
-  async (data) => {
-    const response = await axios.post("/api/admin/newBill", data);
-    return response.data;
-  }
-);
 export const admin = createSlice({
   name: "admin",
   initialState: {
@@ -40,13 +31,13 @@ export const admin = createSlice({
     allTransactions: [],
     products: [],
     searchedProducts: [],
+    boxdetails: {},
     // Adding to Billing List
     showAddToListBox: false,
     addToListboxdetail: {},
     billProdList: [],
     subTotal: 0,
     showBox: false,
-    boxdetails: {},
     billNumber: 0,
     date: "",
   },
@@ -64,10 +55,11 @@ export const admin = createSlice({
       state.boxdetails = action?.payload;
     },
     addToList: (state, action) => {
-      const { name, price, quantity } = action.payload;
+      const { name, sellPrice, quantity } = action.payload;
+      Number(quantity);
       state.billProdList.push({
         name,
-        price,
+        sellPrice,
         quantity,
         billNumber: state.billNumber,
       });
@@ -75,7 +67,7 @@ export const admin = createSlice({
       state.searchedProducts = [];
       let total = 0;
       state.billProdList.forEach((prod) => {
-        total += Number(prod.quantity) * Number(prod.price);
+        total += Number(prod.quantity) * Number(prod.sellPrice);
       });
       state.subTotal = total;
     },
@@ -96,7 +88,7 @@ export const admin = createSlice({
     calSubTotal: (state) => {
       let total = 0;
       state.billProdList.forEach((prod) => {
-        total += Number(prod.quantity) * Number(prod.price);
+        total += Number(prod.quantity) * Number(prod.sellPrice);
       });
       state.subTotal = total;
     },
@@ -111,6 +103,12 @@ export const admin = createSlice({
         state.searchedProducts = filteredProducts;
       }
     },
+    resetBill: (state) => {
+      state.billProdList = [];
+      state.addToListboxdetail = {};
+      state.subTotal = 0;
+      state.billNumber = `Bill-${Date.now()}`;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchUsers.fulfilled, (state, action) => {
@@ -121,10 +119,6 @@ export const admin = createSlice({
     });
     builder.addCase(fetchProducts.fulfilled, (state, action) => {
       state.products = action.payload.products;
-    });
-    builder.addCase(generateBill.fulfilled, (state, action) => {
-      state.billProdList = [];
-      state.subTotal=0;
     });
   },
 });
@@ -137,4 +131,5 @@ export const {
   calSubTotal,
   searchProductsList,
   newBillNumber,
+  resetBill,
 } = admin.actions;

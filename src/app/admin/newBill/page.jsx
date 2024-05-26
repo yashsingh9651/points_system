@@ -3,21 +3,21 @@ import Table from "@/components/Table";
 import {
   fetchProducts,
   fetchUsers,
-  generateBill,
   newBillNumber,
-  searchProductsList,
+  resetBill,
 } from "@/redux/slices/admin";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import AddToListBox from "@/components/AddToListBox";
 import { useReactToPrint } from "react-to-print";
-import { Typography } from "@material-tailwind/react";
+import SearchBar from "@/components/searchBar";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const page = () => {
   const { email } = useSelector((state) => state.user.userData);
   const billProdList = useSelector((state) => state.admin.billProdList);
-  const searchedProducts = useSelector((state) => state.admin.searchedProducts);
   const showAddToListBox = useSelector((state) => state.admin.showAddToListBox);
   const billNumber = useSelector((state) => state.admin.billNumber);
   const date = useSelector((state) => state.admin.date);
@@ -29,8 +29,19 @@ const page = () => {
   const pdfRef = useRef();
   const printPdf = useReactToPrint({
     content: () => pdfRef.current,
-    documentTitle: `Bill Number-69`,
+    documentTitle: `${billNumber}`,
   });
+  // generating Bill & sending data to database
+  const generateBill = async (data) => {
+    const response = await axios.post("/api/admin/Bills/newBill", data);
+    if (response.data.success) {
+      toast.success(response.data.message);
+      setCustomerName("");
+      dispatch(resetBill());
+    } else {
+      toast.error(response.data.message);
+    }
+  };
   // Fetching All Products and users
   const dispatch = useDispatch();
   useEffect(() => {
@@ -45,18 +56,8 @@ const page = () => {
       <h1 className="text-2xl font-medium font-Ubuntu text-center">
         Search a Product
       </h1>
-      <input
-        onChange={(e) => dispatch(searchProductsList(e.target.value))}
-        type="text"
-        className="lg:w-3/4 p-2 border-gray-500 border rounded-md"
-        placeholder="Search by Product Name"
-      />
-      {/* Searched Product list */}
-      <div className="relative bg-white z-20 w-full -mt-4">
-        <div className="absolute w-full top-0 left-0">
-          <Table data={searchedProducts} tableHead={[]} type={"NEWBILL"} />
-        </div>
-      </div>
+      <SearchBar type={"NEWBILL"} />
+      {/* Brokers List */}
       <select
         className="w-full p-3 rounded-md bg-white border border-gray-400 focus:!border-t-gray-900"
         name="broker"
@@ -65,7 +66,11 @@ const page = () => {
       >
         <option value="">Select Broker</option>
         {users?.map((user) => (
-          <option className="flex justify-between" value={user.email}>
+          <option
+            key={user.email}
+            className="flex justify-between"
+            value={user.email}
+          >
             {user.email}
           </option>
         ))}
@@ -75,7 +80,7 @@ const page = () => {
         ref={pdfRef}
         className="bg-gray-200 w-full rounded p-5 flex flex-col gap-4"
       >
-        {/* Heading LOGO */}
+        {/* LOGO */}
         <div className="mx-auto max-w-fit font-semibold text-lg lg:text-xl flex gap-2 items-center">
           <Image
             width={200}
@@ -117,17 +122,15 @@ const page = () => {
       <div className="flex justify-end gap-5 w-full">
         <button
           onClick={() =>
-            dispatch(
-              generateBill({
-                adminEmail: email,
-                billProdList,
-                billNumber,
-                date,
-                subTotal,
-                customerName,
-                broker
-              })
-            )
+            generateBill({
+              adminEmail: email,
+              billProdList,
+              billNumber,
+              date,
+              subTotal,
+              customerName,
+              broker,
+            })
           }
           className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md"
         >

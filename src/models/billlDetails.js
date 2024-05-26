@@ -13,7 +13,7 @@ const billDetailsSchema = new mongoose.Schema({
   broker: { type: "String" },
 });
 
-const billDetail =
+const billDetails =
   mongoose.models.billDetails ||
   mongoose.model("billDetails", billDetailsSchema);
-export default billDetail;
+export default billDetails;
