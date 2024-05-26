@@ -22,7 +22,7 @@ export async function middleware(request) {
   if (token && adminPath) {
     const { payload } = await jwtVerify(token, getJwtSecretKey());
     if (!payload.isAdmin) {
-      return NextResponse.redirect(new URL("/", request.nextUrl));
+      return NextResponse.redirect(new URL("/not-found", request.nextUrl));
     }
   }
   // Public Protected Routes
