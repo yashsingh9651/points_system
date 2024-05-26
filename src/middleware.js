@@ -5,6 +5,7 @@ export async function middleware(request) {
   const path = request.nextUrl.pathname;
   const adminPath =
     path.slice(0, 6) === "/admin" || path.slice(0, 7) === "/studio";
+    console.log(adminPath);
   const isPublicPath =
     path === "/login" ||
     path === "/signup" ||
