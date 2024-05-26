@@ -3,7 +3,7 @@ import Table from "@/components/Table";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect} from "react";
 import { fetchProducts } from "@/redux/slices/admin";
-import SearchBar from "@/components/searchBar";
+import SearchBar from "@/components/SearchBar";
 import ProductForm from "@/components/ProductForm";
 
 const page = () => {

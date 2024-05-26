@@ -75,7 +75,7 @@ export function StickyNavbar() {
             color="blue-gray"
             className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
           >
-            <Link href="/admin/newBill">new Bill</Link>
+            <Link href="/admin/bills/new">new Bill</Link>
           </Typography>
           <Typography
             as="li"
@@ -83,7 +83,7 @@ export function StickyNavbar() {
             color="blue-gray"
             className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
           >
-            <Link href="/admin/billHis">Bill History</Link>
+            <Link href="/admin/bills">Bills</Link>
           </Typography>
           <Typography
             as="li"

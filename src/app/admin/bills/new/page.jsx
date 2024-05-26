@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
 import AddToListBox from "@/components/AddToListBox";
 import { useReactToPrint } from "react-to-print";
-import SearchBar from "@/components/searchBar";
+import SearchBar from "@/components/SearchBar";
 import axios from "axios";
 import toast from "react-hot-toast";
 

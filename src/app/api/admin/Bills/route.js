@@ -1,17 +1,19 @@
 import { connect } from "@/dbConfig/dbConfig";
 import { NextResponse } from "next/server";
 import User from "@/models/userModel";
+import billDetails from "@/models/billlDetails";
 connect();
 
-export default async function POST(request) {
+export async function POST(request) {
   try {
     const { adminEmail } = await request.json();
     const admin = await User.findOne({ email: adminEmail });
     if (admin.isAdmin) {
-      await newBillProd.insertMany(billProdList);
+      const bills = await billDetails.find();
       return NextResponse.json({
-        message: "Bill Generated Successfully",
+        message: "Bills Fetched Successfully",
         success: true,
+        bills,
       });
     }
     return NextResponse.json({
