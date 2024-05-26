@@ -25,7 +25,7 @@ const ProductForm = () => {
       onSubmit: async (values, action) => {
         setLoading(true);
         const { name, quantity, buyPrice, sellPrice, MRP, discount } = values;
-        const res = await axios.post("/api/admin/product/addProduct", {
+        const res = await axios.post("/api/admin/product/add", {
           adminEmail: email,
           name,
           quantity,

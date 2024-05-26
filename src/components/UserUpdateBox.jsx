@@ -12,7 +12,7 @@ const UpdateBox = () => {
   const [username, setUsername] = useState(boxdetails?.username);
   const [occupation, setOccupation] = useState(boxdetails?.occupation);
   const updateUser = async ({ occupation, username, email, _id }) => {
-    const res = await axios.put("/api/admin/updateUser", {
+    const res = await axios.put("/api/admin/users/update", {
       email,
       _id,
       username,

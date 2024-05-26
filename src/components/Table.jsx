@@ -21,7 +21,7 @@ const Table = ({ data, tableHead, type }) => {
   const [loading, setLoading] = useState(false);
   const updateStatus = async (_id) => {
     setLoading(true);
-    const res = await axios.put("/api/admin/updateTrans", { email, _id });
+    const res = await axios.put("/api/admin/transactions/update", { email, _id });
     if (res.data.success) {
       dispatch(fetchTransactions(email));
     }
