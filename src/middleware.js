@@ -5,7 +5,6 @@ export async function middleware(request) {
   const path = request.nextUrl.pathname;
   const adminPath =
     path.slice(0, 6) === "/admin" || path.slice(0, 7) === "/studio";
-    console.log(adminPath);
   const isPublicPath =
     path === "/login" ||
     path === "/signup" ||
@@ -23,7 +22,7 @@ export async function middleware(request) {
   if (token && adminPath) {
     const { payload } = await jwtVerify(token, getJwtSecretKey());
     if (!payload.isAdmin) {
-      return NextResponse.redirect(new URL("/not-found", request.nextUrl));
+      return NextResponse.redirect(new URL("/", request.nextUrl));
     }
   }
   // Public Protected Routes
