@@ -38,6 +38,7 @@ const page = () => {
       toast.success(response.data.message);
       setCustomerName("");
       dispatch(resetBill());
+      dispatch(fetchProducts(email));
     } else {
       toast.error(response.data.message);
     }
@@ -112,7 +113,7 @@ const page = () => {
         <Table
           data={billProdList}
           tableHead={["Product Name", "Quantity", "Price", "Total", ""]}
-          type={"BILLINGLIST"}
+          type={"NEWBILLINGLIST"}
         />
         <h1 className="max-w-fit self-end text-lg font-medium">
           SubTotal: ₹ {subTotal}

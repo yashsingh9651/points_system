@@ -21,7 +21,10 @@ const Table = ({ data, tableHead, type }) => {
   const [loading, setLoading] = useState(false);
   const updateStatus = async (_id) => {
     setLoading(true);
-    const res = await axios.put("/api/admin/transactions/update", { email, _id });
+    const res = await axios.put("/api/admin/transactions/update", {
+      email,
+      _id,
+    });
     if (res.data.success) {
       dispatch(fetchTransactions(email));
     }
@@ -319,7 +322,7 @@ const Table = ({ data, tableHead, type }) => {
         </table>
       </Card>
     );
-  } else if (type === "BILLINGLIST") {
+  } else if (type === "NEWBILLINGLIST" || type === "BILLINGLIST") {
     return (
       <Card className="h-full w-full mx-auto overflow-scroll">
         <table className="w-full min-w-max table-auto text-left">
@@ -387,21 +390,23 @@ const Table = ({ data, tableHead, type }) => {
                     </Typography>
                   </td>
                   {/* Buttons */}
-                  <td className={`${classes} flex justify-between text-lg`}>
-                    <FaEdit
-                      onClick={() => {
-                        dispatch(showAddToListBox(product));
-                      }}
-                      className="text-green-800 hover:scale-125 duration-150 cursor-pointer"
-                    />
-                    <MdDelete
-                      onClick={() => {
-                        dispatch(removeProdFromBillProdList(product._id));
-                        dispatch(calSubTotal());
-                      }}
-                      className="text-red-600 hover:scale-125 duration-150 cursor-pointer"
-                    />
-                  </td>
+                  {type === "NEWBILLINGLIST" && (
+                    <td className={`${classes} flex justify-between text-lg`}>
+                      <FaEdit
+                        onClick={() => {
+                          dispatch(showAddToListBox(product));
+                        }}
+                        className="text-green-800 hover:scale-125 duration-150 cursor-pointer"
+                      />
+                      <MdDelete
+                        onClick={() => {
+                          dispatch(removeProdFromBillProdList(product._id));
+                          dispatch(calSubTotal());
+                        }}
+                        className="text-red-600 hover:scale-125 duration-150 cursor-pointer"
+                      />
+                    </td>
+                  )}
                 </tr>
               );
             })}
