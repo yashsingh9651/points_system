@@ -21,7 +21,7 @@ const page = () => {
       {bills?.map((bill) => (
         <Link
           href={`/admin/bills/${bill.billNumber}`}
-          className="flex cursor-pointer hover:bg-gray-200 duration-200 bg-gray-300 px-3 py-4 rounded justify-between items-center"
+          className="grid grid-cols-5 cursor-pointer hover:bg-gray-200 duration-200 bg-gray-300 px-3 py-4 rounded place-items-center"
         >
           <h1>{bill.billNumber}</h1>
           <h1>{bill.date}</h1>

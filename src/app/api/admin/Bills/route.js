@@ -10,6 +10,7 @@ export async function POST(request) {
     const admin = await User.findOne({ email: adminEmail });
     if (admin.isAdmin) {
       const bills = await billDetails.find();
+      bills.reverse();
       return NextResponse.json({
         message: "Bills Fetched Successfully",
         success: true,

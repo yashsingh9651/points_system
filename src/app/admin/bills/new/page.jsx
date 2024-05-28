@@ -14,6 +14,7 @@ import { useReactToPrint } from "react-to-print";
 import SearchBar from "@/components/SearchBar";
 import axios from "axios";
 import toast from "react-hot-toast";
+import Loading from "@/components/Loading";
 
 const page = () => {
   const { email } = useSelector((state) => state.user.userData);
@@ -24,6 +25,7 @@ const page = () => {
   const subTotal = useSelector((state) => state.admin.subTotal);
   const users = useSelector((state) => state.admin.allUsers);
   const [customerName, setCustomerName] = useState("");
+  const [loading, setLoading] = useState(false);
   const [broker, setBroker] = useState("");
   // Converting html page to pdf format and Download pdf...
   const pdfRef = useRef();
@@ -33,9 +35,11 @@ const page = () => {
   });
   // generating Bill & sending data to database
   const generateBill = async (data) => {
+    setLoading(true);
     const response = await axios.post("/api/admin/Bills/newBill", data);
     if (response.data.success) {
       toast.success(response.data.message);
+      setLoading(false);
       setCustomerName("");
       dispatch(resetBill());
       dispatch(fetchProducts(email));
@@ -121,22 +125,28 @@ const page = () => {
       </div>
       {/* Buttons */}
       <div className="flex justify-end gap-5 w-full">
-        <button
-          onClick={() =>
-            generateBill({
-              adminEmail: email,
-              billProdList,
-              billNumber,
-              date,
-              subTotal,
-              customerName,
-              broker,
-            })
-          }
-          className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md"
-        >
-          Generate Bill
-        </button>
+        {!loading ? (
+          <button
+            onClick={() =>
+              generateBill({
+                adminEmail: email,
+                billProdList,
+                billNumber,
+                date,
+                subTotal,
+                customerName,
+                broker,
+              })
+            }
+            className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md"
+          >
+            Generate Bill
+          </button>
+        ) : (
+          <button className="bg-black rounded px-4 py-2">
+            <Loading />
+          </button>
+        )}
         <button
           onClick={() => printPdf()}
           className="bg-red-500 hover:bg-red-700 hover:scale-105 duration-200 text-white px-4 py-2 rounded-md"

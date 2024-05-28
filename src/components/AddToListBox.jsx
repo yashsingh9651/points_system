@@ -24,6 +24,10 @@ const AddToListBox = () => {
           <h1 className="text-lg font-semibold">
             Product Name : {product.name}
           </h1>
+          {newProduct.quantity > product.quantity &&
+            product.MRP !== undefined && (
+              <h1 className="text-red-600 text-lg">Unsufficient Stock</h1>
+            )}
           <div>
             Quantity :
             <input
@@ -60,8 +64,9 @@ const AddToListBox = () => {
           <div className="flex justify-end gap-8">
             <button
               onClick={() => {
-                if (product.MRP === undefined)
+                if (product.MRP === undefined) {
                   dispatch(removeProdFromBillProdList(product._id));
+                }
                 dispatch(addToList(newProduct));
               }}
               className="p-2 bg-green-500 hover:bg-green-700 hover:scale-105 duration-200 text-white rounded-md"

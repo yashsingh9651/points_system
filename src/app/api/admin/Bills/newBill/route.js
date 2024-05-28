@@ -4,8 +4,10 @@ import User from "@/models/userModel";
 import newBillProd from "@/models/newBillProd";
 import billDetails from "@/models/billlDetails";
 import Product from "@/models/product";
+import Transaction from "@/models/transModel";
+import { sendMail } from "@/helpers/mailer";
 connect();
-
+// Updating Inventory products with bulk method
 async function updateProductQuantities(billProdList) {
   const bulkOperations = billProdList.map((item) => {
     return {
@@ -40,6 +42,27 @@ export async function POST(request) {
         broker,
       });
       await newBill.save();
+      // UPDATING POINTS AND SENDING MAIL TO BROKER
+      if (broker) {
+        const userBroker = await User.findOne({ email: broker });
+        const creditPoints = (subTotal / 100) * 2;
+        userBroker.points += creditPoints;
+        await userBroker.save();
+        const newTransaction = new Transaction({
+          email: broker,
+          type: "CREDIT",
+          amount: creditPoints,
+          username: userBroker.username,
+          status: "approved",
+        });
+        await newTransaction.save();
+        await sendMail({
+          email: broker,
+          emailType: "CREDIT",
+          amount: creditPoints,
+          name: userBroker.username,
+        });
+      }
       return NextResponse.json({
         message: "Bill Generated Successfully",
         success: true,
