@@ -71,13 +71,34 @@ export const admin = createSlice({
       });
       state.subTotal = total;
     },
+    addToRestockList: (state, action) => {
+      const { name, sellPrice, quantity, buyPrice, MRP, discount } =
+        action.payload;
+      Number(quantity);
+      state.billProdList.push({
+        name,
+        sellPrice,
+        quantity,
+        buyPrice,
+        MRP,
+        discount,
+        billNumber: state.billNumber,
+      });
+      state.showAddToListBox = false;
+      state.searchedProducts = [];
+      let total = 0;
+      state.billProdList.forEach((prod) => {
+        total += Number(prod.quantity) * Number(prod.sellPrice);
+      });
+      state.subTotal = total;
+    },
     showAddToListBox: (state, action) => {
       state.showAddToListBox = !state.showAddToListBox;
       state.addToListboxdetail = action?.payload;
     },
     removeProdFromBillProdList: (state, action) => {
       const index = state.billProdList.findIndex((prod) => {
-        return prod._id === action.payload;
+        return prod.name === action.payload;
       });
       if (index === 0) {
         state.billProdList.shift();
@@ -132,4 +153,5 @@ export const {
   searchProductsList,
   newBillNumber,
   resetBill,
+  addToRestockList,
 } = admin.actions;

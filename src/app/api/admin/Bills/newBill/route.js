@@ -32,8 +32,6 @@ export async function POST(request) {
     } = await request.json();
     const admin = await User.findOne({ email: adminEmail });
     if (admin.isAdmin) {
-      await newBillProd.insertMany(billProdList);
-      await updateProductQuantities(billProdList);
       const newBill = new billDetails({
         date,
         subTotal,
@@ -41,6 +39,8 @@ export async function POST(request) {
         customerName,
         broker,
       });
+      await newBillProd.insertMany(billProdList);
+      await updateProductQuantities(billProdList);
       await newBill.save();
       // UPDATING POINTS AND SENDING MAIL TO BROKER
       if (broker) {

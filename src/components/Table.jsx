@@ -391,7 +391,9 @@ const Table = ({ data, tableHead, type }) => {
                   </td>
                   {/* Buttons */}
                   {type === "NEWBILLINGLIST" && (
-                    <td className={`${classes} flex justify-between text-lg`}>
+                    <td
+                      className={`${classes} flex justify-between gap-3 lg:gap-0 text-lg`}
+                    >
                       <FaEdit
                         onClick={() => {
                           dispatch(showAddToListBox(product));
@@ -400,13 +402,132 @@ const Table = ({ data, tableHead, type }) => {
                       />
                       <MdDelete
                         onClick={() => {
-                          dispatch(removeProdFromBillProdList(product._id));
+                          dispatch(removeProdFromBillProdList(product.name));
                           dispatch(calSubTotal());
                         }}
                         className="text-red-600 hover:scale-125 duration-150 cursor-pointer"
                       />
                     </td>
                   )}
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      </Card>
+    );
+  } else if (type === "RESTOCKBILLINGLIST") {
+    return (
+      <Card className="h-full w-full mx-auto overflow-scroll">
+        <table className="w-full min-w-max table-auto text-left">
+          <thead>
+            <tr>
+              {tableHead.map((head) => (
+                <th
+                  key={head}
+                  className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                >
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal text-center leading-none opacity-70"
+                  >
+                    {head}
+                  </Typography>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((product, index) => {
+              const isLast = index === data.length - 1;
+              const classes = isLast
+                ? "p-4"
+                : "p-4 border-b border-blue-gray-50";
+
+              return (
+                <tr key={product.name}>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.name}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.quantity}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.buyPrice}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.sellPrice}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.MRP}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.discount}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product.sellPrice * product.quantity}
+                    </Typography>
+                  </td>
+                  {/* Buttons */}
+                  <td
+                    className={`${classes} flex justify-between gap-3 lg:gap-0 text-lg`}
+                  >
+                    <FaEdit
+                      onClick={() => {
+                        dispatch(showAddToListBox(product));
+                      }}
+                      className="text-green-800 hover:scale-125 duration-150 cursor-pointer"
+                    />
+                    <MdDelete
+                      onClick={() => {
+                        dispatch(removeProdFromBillProdList(product.name));
+                        dispatch(calSubTotal());
+                      }}
+                      className="text-red-600 hover:scale-125 duration-150 cursor-pointer"
+                    />
+                  </td>
                 </tr>
               );
             })}

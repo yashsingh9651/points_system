@@ -1,13 +1,13 @@
 "use client";
 import {
-  addToList,
+  addToRestockList,
   removeProdFromBillProdList,
   showAddToListBox,
 } from "@/redux/slices/admin";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-const AddToListBox = () => {
+const AddToRestockListBox = () => {
   const dispatch = useDispatch();
   const product = useSelector((state) => state.admin.addToListboxdetail);
   const [newProduct, setNewProduct] = useState(product);
@@ -24,10 +24,6 @@ const AddToListBox = () => {
           <h1 className="text-lg font-semibold">
             Product Name : {product.name}
           </h1>
-          {newProduct.quantity > product.quantity &&
-            product.MRP !== undefined && (
-              <h1 className="text-red-600 text-lg">Unsufficient Stock</h1>
-            )}
           <div>
             Quantity :
             <input
@@ -51,23 +47,46 @@ const AddToListBox = () => {
               className="p-2 border border-gray-400 rounded-md"
             />
           </div>
-          {newProduct.buyPrice !== undefined && (
-            <div>Buying Price : ₹ {newProduct.buyPrice}</div>
-          )}
-          {newProduct.MRP !== undefined && <div>MRP : ₹ {newProduct.MRP}</div>}
-          {newProduct.discount !== undefined && (
-            <div>discount : {newProduct.discount}%</div>
-          )}
-          <h1 className="text-lg font-semibold">
-            Total : ₹ {newProduct.quantity * newProduct.sellPrice}
-          </h1>
+          <div>
+            Buying Price :
+            <input
+              onChange={handleChange}
+              type="number"
+              name="buyPrice"
+              placeholder="Enter Buying Price"
+              value={newProduct.buyPrice}
+              className="p-2 border border-gray-400 rounded-md"
+            />
+          </div>
+          <div>
+            MRP :
+            <input
+              onChange={handleChange}
+              type="number"
+              name="MRP"
+              placeholder="Enter MRP"
+              value={newProduct.MRP}
+              className="p-2 border border-gray-400 rounded-md"
+            />
+          </div>
+          <div>
+            Discount :
+            <input
+              onChange={handleChange}
+              type="number"
+              name="discount"
+              placeholder="Enter discount"
+              value={newProduct.discount}
+              className="p-2 border border-gray-400 rounded-md"
+            />
+          </div>
           <div className="flex justify-end gap-8">
             <button
               onClick={() => {
-                if (product.MRP === undefined) {
+                if (product._id === undefined) {
                   dispatch(removeProdFromBillProdList(product.name));
                 }
-                dispatch(addToList(newProduct));
+                dispatch(addToRestockList(newProduct));
               }}
               className="p-2 bg-green-500 hover:bg-green-700 hover:scale-105 duration-200 text-white rounded-md"
             >
@@ -86,4 +105,4 @@ const AddToListBox = () => {
   );
 };
 
-export default AddToListBox;
+export default AddToRestockListBox;

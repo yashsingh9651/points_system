@@ -91,7 +91,7 @@ export function StickyNavbar() {
             color="blue-gray"
             className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
           >
-            <Link href="/admin/restock">Restock</Link>
+            <Link href="/admin/restock">Restock Bills</Link>
           </Typography>
           <Typography
             as="li"
@@ -99,7 +99,7 @@ export function StickyNavbar() {
             color="blue-gray"
             className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
           >
-            <Link href="/admin/restockHis">Restock History</Link>
+            <Link href="/admin/restock/newBill">New Restock</Link>
           </Typography>
           <Typography
             as="li"

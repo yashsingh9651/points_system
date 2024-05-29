@@ -2,19 +2,18 @@
 import Table from "@/components/Table";
 import {
   fetchProducts,
-  fetchUsers,
   newBillNumber,
   resetBill,
 } from "@/redux/slices/admin";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
-import AddToListBox from "@/components/AddToListBox";
 import { useReactToPrint } from "react-to-print";
 import SearchBar from "@/components/SearchBar";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Loading from "@/components/Loading";
+import AddToRestockListBox from "@/components/AddToRestockListBox";
 
 const page = () => {
   const { email } = useSelector((state) => state.user.userData);
@@ -23,24 +22,22 @@ const page = () => {
   const billNumber = useSelector((state) => state.admin.billNumber);
   const date = useSelector((state) => state.admin.date);
   const subTotal = useSelector((state) => state.admin.subTotal);
-  const users = useSelector((state) => state.admin.allUsers);
-  const [customerName, setCustomerName] = useState("");
+  const [senderName, setSenderName] = useState("");
   const [loading, setLoading] = useState(false);
-  const [broker, setBroker] = useState("");
   // Converting html page to pdf format and Download pdf...
   const pdfRef = useRef();
   const printPdf = useReactToPrint({
     content: () => pdfRef.current,
-    documentTitle: `${billNumber}`,
+    documentTitle: `Restock-${billNumber}`,
   });
   // generating Bill & sending data to database
   const generateBill = async (data) => {
     setLoading(true);
-    const response = await axios.post("/api/admin/Bills/newBill", data);
+    const response = await axios.post("/api/admin/restockBills/newBill", data);
     if (response.data.success) {
       toast.success(response.data.message);
       setLoading(false);
-      setCustomerName("");
+      setSenderName("");
       dispatch(resetBill());
       dispatch(fetchProducts(email));
     } else {
@@ -51,36 +48,17 @@ const page = () => {
   // Fetching All Products and users
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(fetchUsers(email));
     dispatch(newBillNumber());
     dispatch(fetchProducts(email));
   }, [email]);
   return (
     <div className="pt-16 lg:pt-24 px-6 flex flex-col gap-5 items-center">
-      {showAddToListBox && <AddToListBox />}
+      {showAddToListBox && <AddToRestockListBox />}
       {/* Search Produt Section */}
       <h1 className="text-2xl font-medium font-Ubuntu text-center">
         Search a Product
       </h1>
       <SearchBar type={"NEWBILL"} />
-      {/* Brokers List */}
-      <select
-        className="w-full p-3 rounded-md bg-white border border-gray-400 focus:!border-t-gray-900"
-        name="broker"
-        value={broker}
-        onChange={(e) => setBroker(e.target.value)}
-      >
-        <option value="">Select Broker</option>
-        {users?.map((user) => (
-          <option
-            key={user.email}
-            className="flex justify-between"
-            value={user.email}
-          >
-            {user.email}
-          </option>
-        ))}
-      </select>
       {/* Bill */}
       <div
         ref={pdfRef}
@@ -103,12 +81,12 @@ const page = () => {
             <h1>Name :</h1>
             <input
               type="text"
-              value={customerName}
-              onChange={(e) => setCustomerName(e.target.value)}
+              value={senderName}
+              onChange={(e) => setSenderName(e.target.value)}
               name="name"
               autoFocus="true"
               className="lg:w-3/4 bg-transparent focus:outline outline-black p-1 text-lg border-none border rounded-md"
-              placeholder="Enter Customer Name"
+              placeholder="Enter Sender Name"
             />
           </div>
           <h1>Date : {date}</h1>
@@ -117,8 +95,8 @@ const page = () => {
         {/* Products List */}
         <Table
           data={billProdList}
-          tableHead={["Product Name", "Quantity", "Price", "Total", ""]}
-          type={"NEWBILLINGLIST"}
+          tableHead={["Product Name", "Quantity", "Buy Price", "Sell Price", "MRP", "Discount", "Total", ""]}
+          type={"RESTOCKBILLINGLIST"}
         />
         <h1 className="max-w-fit self-end text-lg font-medium">
           SubTotal: ₹ {subTotal}
@@ -135,8 +113,7 @@ const page = () => {
                 billNumber,
                 date,
                 subTotal,
-                customerName,
-                broker,
+                senderName,
               })
             }
             className="bg-green-500 hover:scale-105 duration-200 hover:bg-green-700 text-white px-4 py-2 rounded-md"

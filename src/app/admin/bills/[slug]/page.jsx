@@ -50,7 +50,7 @@ const page = ({ params }) => {
           <h1>Akanksha Enterprises</h1>
         </div>
         {/* Billing Details */}
-        <div className="flex justify-between items-center text-lg">
+        <div className="flex flex-col lg:flex-row justify-between items-center text-lg">
           <div className="flex items-center gap-1">
             <h1>Customer Name : {billDetails?.customerName}</h1>
           </div>
