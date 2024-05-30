@@ -64,17 +64,6 @@ const page = () => {
         ref={pdfRef}
         className="bg-gray-200 w-full rounded p-5 flex flex-col gap-4"
       >
-        {/* LOGO */}
-        <div className="mx-auto max-w-fit font-semibold text-lg lg:text-xl flex gap-2 items-center">
-          <Image
-            width={200}
-            height={200}
-            className="w-6 lg:w-8 aspect-square object-cover"
-            src="/logo_black.png"
-            alt="logo"
-          />
-          <h1>Akanksha Enterprises</h1>
-        </div>
         {/* Billing Details */}
         <div className="flex flex-col lg:flex-row justify-between items-center text-base lg:text-lg">
           <div className="flex items-center gap-1">
@@ -96,7 +85,7 @@ const page = () => {
         <Table
           data={billProdList}
           tableHead={["Product Name", "Quantity", "Buy Price", "Sell Price", "MRP", "Discount", "Total", ""]}
-          type={"RESTOCKBILLINGLIST"}
+          type={"NEWRESTOCKBILLINGLIST"}
         />
         <h1 className="max-w-fit self-end text-lg font-medium">
           SubTotal: ₹ {subTotal}

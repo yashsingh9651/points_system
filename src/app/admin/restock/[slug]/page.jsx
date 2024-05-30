@@ -16,7 +16,7 @@ const page = ({ params }) => {
   const [products, setProducts] = useState([]);
   const [billDetails, setBillDetails] = useState({});
   const fetchBill = async () => {
-    const res = await axios.post("/api/admin/Bills/getBill", {
+    const res = await axios.post("/api/admin/restockBills/getBill", {
       adminEmail: email,
       billNumber: params.slug,
     });
@@ -29,29 +29,15 @@ const page = ({ params }) => {
 
   return (
     <div className="pt-16 lg:pt-24 px-5">
-      {billDetails?.broker && (
-        <h1 className="my-2 text-lg">Brokers Email : {billDetails?.broker}</h1>
-      )}
       {/* Bill Details */}
       <div
         ref={pdfRef}
         className="bg-gray-200 w-full rounded p-5 flex flex-col gap-4"
       >
-        {/* LOGO */}
-        <div className="mx-auto max-w-fit font-semibold text-lg lg:text-xl flex gap-2 items-center">
-          <Image
-            width={200}
-            height={200}
-            className="w-6 lg:w-8 aspect-square object-cover"
-            src="/logo_black.png"
-            alt="logo"
-          />
-          <h1>Akanksha Enterprises</h1>
-        </div>
         {/* Billing Details */}
         <div className="flex flex-col lg:flex-row justify-between items-center text-lg">
           <div className="flex items-center gap-1">
-            <h1>Customer Name : {billDetails?.customerName}</h1>
+            <h1>Sender's Name : {billDetails?.senderName}</h1>
           </div>
           <h1>Date : {billDetails?.date}</h1>
           <h1>{billDetails?.billNumber}</h1>
@@ -62,11 +48,14 @@ const page = ({ params }) => {
           tableHead={[
             "Product Name",
             "Quantity",
-            "Price",
+            "Buy Price",
+            "Sell Price",
+            "MRP",
+            "Discount",
             "Total",
             "",
           ]}
-          type={"BILLINGLIST"}
+          type={"RESTOCKBILLINGLIST"}
         />
         <h1 className="max-w-fit self-end text-lg font-medium">
           SubTotal: ₹ {billDetails?.subTotal}

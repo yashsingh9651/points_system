@@ -416,7 +416,10 @@ const Table = ({ data, tableHead, type }) => {
         </table>
       </Card>
     );
-  } else if (type === "RESTOCKBILLINGLIST") {
+  } else if (
+    type === "NEWRESTOCKBILLINGLIST" ||
+    type === "RESTOCKBILLINGLIST"
+  ) {
     return (
       <Card className="h-full w-full mx-auto overflow-scroll">
         <table className="w-full min-w-max table-auto text-left">
@@ -511,23 +514,25 @@ const Table = ({ data, tableHead, type }) => {
                     </Typography>
                   </td>
                   {/* Buttons */}
-                  <td
-                    className={`${classes} flex justify-between gap-3 lg:gap-0 text-lg`}
-                  >
-                    <FaEdit
-                      onClick={() => {
-                        dispatch(showAddToListBox(product));
-                      }}
-                      className="text-green-800 hover:scale-125 duration-150 cursor-pointer"
-                    />
-                    <MdDelete
-                      onClick={() => {
-                        dispatch(removeProdFromBillProdList(product.name));
-                        dispatch(calSubTotal());
-                      }}
-                      className="text-red-600 hover:scale-125 duration-150 cursor-pointer"
-                    />
-                  </td>
+                  {type === "NEWRESTOCKBILLINGLIST" && (
+                    <td
+                      className={`${classes} flex justify-between gap-3 lg:gap-0 text-lg`}
+                    >
+                      <FaEdit
+                        onClick={() => {
+                          dispatch(showAddToListBox(product));
+                        }}
+                        className="text-green-800 hover:scale-125 duration-150 cursor-pointer"
+                      />
+                      <MdDelete
+                        onClick={() => {
+                          dispatch(removeProdFromBillProdList(product.name));
+                          dispatch(calSubTotal());
+                        }}
+                        className="text-red-600 hover:scale-125 duration-150 cursor-pointer"
+                      />
+                    </td>
+                  )}
                 </tr>
               );
             })}
