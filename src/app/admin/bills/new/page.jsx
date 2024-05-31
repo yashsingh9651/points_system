@@ -35,17 +35,21 @@ const page = () => {
   });
   // generating Bill & sending data to database
   const generateBill = async (data) => {
-    setLoading(true);
-    const response = await axios.post("/api/admin/Bills/newBill", data);
-    if (response.data.success) {
-      toast.success(response.data.message);
-      setLoading(false);
-      setCustomerName("");
-      dispatch(resetBill());
-      dispatch(fetchProducts(email));
+    if (customerName.length > 0) {
+      setLoading(true);
+      const response = await axios.post("/api/admin/Bills/newBill", data);
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setLoading(false);
+        setCustomerName("");
+        dispatch(resetBill());
+        dispatch(fetchProducts(email));
+      } else {
+        toast.error(response.data.message);
+        setLoading(false);
+      }
     } else {
-      toast.error(response.data.message);
-      setLoading(false);
+      toast.error("Enter Customer Name");
     }
   };
   // Fetching All Products and users

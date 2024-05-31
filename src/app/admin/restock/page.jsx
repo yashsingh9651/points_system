@@ -18,7 +18,8 @@ const page = () => {
 
   return (
     <div className="pt-16 lg:pt-24 px-6 flex flex-col gap-4">
-      {bills?.length===0&&<h1>No Bills Yet</h1>}
+      <h1 className="text-lg font-medium text-center">Restock Bills</h1>
+      {bills?.length===0&&<h1 className="text-lg font-medium text-center">No Bills Yet</h1>}
       {bills?.map((bill) => (
         <Link
           href={`/admin/restock/${bill.billNumber}`}

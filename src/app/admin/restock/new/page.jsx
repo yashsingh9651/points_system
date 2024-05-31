@@ -1,10 +1,6 @@
 "use client";
 import Table from "@/components/Table";
-import {
-  fetchProducts,
-  newBillNumber,
-  resetBill,
-} from "@/redux/slices/admin";
+import { fetchProducts, newBillNumber, resetBill } from "@/redux/slices/admin";
 import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Image from "next/image";
@@ -32,17 +28,24 @@ const page = () => {
   });
   // generating Bill & sending data to database
   const generateBill = async (data) => {
-    setLoading(true);
-    const response = await axios.post("/api/admin/restockBills/newBill", data);
-    if (response.data.success) {
-      toast.success(response.data.message);
-      setLoading(false);
-      setSenderName("");
-      dispatch(resetBill());
-      dispatch(fetchProducts(email));
-    } else {
-      toast.error(response.data.message);
-      setLoading(false);
+    if (senderName.length > 0) {
+      setLoading(true);
+      const response = await axios.post(
+        "/api/admin/restockBills/newBill",
+        data
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setLoading(false);
+        setSenderName("");
+        dispatch(resetBill());
+        dispatch(fetchProducts(email));
+      } else {
+        toast.error(response.data.message);
+        setLoading(false);
+      }
+    }else{
+      toast.error("Enter senders name");
     }
   };
   // Fetching All Products and users
@@ -84,7 +87,16 @@ const page = () => {
         {/* Products List */}
         <Table
           data={billProdList}
-          tableHead={["Product Name", "Quantity", "Buy Price", "Sell Price", "MRP", "Discount", "Total", ""]}
+          tableHead={[
+            "Product Name",
+            "Quantity",
+            "Buy Price",
+            "Sell Price",
+            "MRP",
+            "Discount",
+            "Total",
+            "",
+          ]}
           type={"NEWRESTOCKBILLINGLIST"}
         />
         <h1 className="max-w-fit self-end text-lg font-medium">
