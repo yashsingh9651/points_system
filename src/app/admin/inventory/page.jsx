@@ -7,6 +7,7 @@ import SearchBar from "@/components/SearchBar";
 import ProductForm from "@/components/ProductForm";
 
 const page = () => {
+  const { email } = useSelector((state) => state.user.userData);
   const products = useSelector((state) => state.admin.products);
   // Fetching All Products
   const dispatch = useDispatch();
