@@ -13,6 +13,6 @@ const restockBillDetailsSchema = new mongoose.Schema({
 });
 
 const restockBillDetails =
-  mongoose.models.restockBillDetails ||
-  mongoose.model("restockBillDetails", restockBillDetailsSchema);
+  mongoose.models.restockbilldetails ||
+  mongoose.model("restockbilldetails", restockBillDetailsSchema);
 export default restockBillDetails;

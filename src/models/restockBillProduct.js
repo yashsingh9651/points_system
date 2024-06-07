@@ -9,6 +9,6 @@ const restockBillProdSchema = new mongoose.Schema({
   billNumber: { type: String, required: [true, "Please provide a billNumber"] },
 });
 const restockBillProd =
-  mongoose.models.restockBillProds ||
-  mongoose.model("restockBillProds", restockBillProdSchema);
+  mongoose.models.restockbillprods ||
+  mongoose.model("restockbillprods", restockBillProdSchema);
 export default restockBillProd;

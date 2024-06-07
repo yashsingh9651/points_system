@@ -14,6 +14,6 @@ const billDetailsSchema = new mongoose.Schema({
 });
 
 const billDetails =
-  mongoose.models.billDetails ||
-  mongoose.model("billDetails", billDetailsSchema);
+  mongoose.models.billdetails ||
+  mongoose.model("billdetails", billDetailsSchema);
 export default billDetails;

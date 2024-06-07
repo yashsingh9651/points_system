@@ -6,6 +6,6 @@ const newBillProdSchema = new mongoose.Schema({
   billNumber: { type: String, required: [true, "Please provide a billNumber"] },
 });
 const newBillProd =
-  mongoose.models.newBillProds ||
-  mongoose.model("newBillProds", newBillProdSchema);
+  mongoose.models.newbillprods ||
+  mongoose.model("newbillprods", newBillProdSchema);
 export default newBillProd;
