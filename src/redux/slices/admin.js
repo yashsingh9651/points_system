@@ -32,6 +32,7 @@ export const admin = createSlice({
     products: [],
     searchedProducts: [],
     boxdetails: {},
+    showSearchedProducts: false,
     // Adding to Billing List
     showAddToListBox: false,
     addToListboxdetail: {},
@@ -117,7 +118,9 @@ export const admin = createSlice({
       const search = action.payload;
       if (search.length <= 1 || search == "") {
         state.searchedProducts = [];
+        state.showSearchedProducts = false;
       } else {
+        state.showSearchedProducts = true;
         const filteredProducts = state.products?.filter((product) =>
           product.name.toLowerCase().includes(search.toLowerCase())
         );

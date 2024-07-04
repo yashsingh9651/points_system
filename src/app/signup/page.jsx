@@ -32,6 +32,7 @@ const Page = () => {
           setLoading(false);
           toast.success(res.data.message);
           router.push("/login");
+          router.replace('/login');
         } else {
           toast.error(res.data.error);
         }

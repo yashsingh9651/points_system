@@ -34,6 +34,7 @@ const Page = () => {
           setLoading(false);
           toast.success(response.data.message);
           router.push("/");
+          router.replace('/');
         } else if (!response.data.success) {
           setLoading(false);
           toast.error(response.data.error);

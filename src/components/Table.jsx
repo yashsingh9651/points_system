@@ -16,6 +16,9 @@ import {
 
 const Table = ({ data, tableHead, type }) => {
   const { email } = useSelector((state) => state.user.userData);
+  const showSearchedProducts = useSelector(
+    (state) => state.admin.showSearchedProducts
+  );
   // Updating the transation status
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -122,6 +125,7 @@ const Table = ({ data, tableHead, type }) => {
             })}
           </tbody>
         </table>
+        {data?.length == 0 && <h1 className="text-center p-2">No Users</h1>}
       </Card>
     );
   } else if (type === "TRANSACTIONS") {
@@ -220,9 +224,12 @@ const Table = ({ data, tableHead, type }) => {
             })}
           </tbody>
         </table>
+        {data?.length == 0 && (
+          <h1 className="text-center p-2">No Transations</h1>
+        )}
       </Card>
     );
-  } else if (type === "PRODUCTS" || type === "SEARCH" || type === "NEWBILL") {
+  } else if (type === "PRODUCTS" || type === "NEWBILL") {
     return (
       <Card className="h-full w-full xl:w-11/12 mx-auto overflow-scroll">
         <table className="w-full min-w-max table-auto text-left">
@@ -320,6 +327,104 @@ const Table = ({ data, tableHead, type }) => {
             })}
           </tbody>
         </table>
+        {data?.length == 0 && (
+          <h1 className="text-center p-2">No Products To Show</h1>
+        )}
+      </Card>
+    );
+  } else if (type === "SEARCH" && showSearchedProducts) {
+    return (
+      <Card className="h-full w-full xl:w-11/12 mx-auto overflow-scroll">
+        <table className="w-full min-w-max table-auto text-left">
+          <thead>
+            <tr>
+              {tableHead.map((head) => (
+                <th
+                  key={head}
+                  className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                >
+                  <Typography
+                    variant="small"
+                    color="blue-gray"
+                    className="font-normal text-center leading-none opacity-70"
+                  >
+                    {head}
+                  </Typography>
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((product, index) => {
+              const isLast = index === data.length - 1;
+              const classes = isLast
+                ? "p-4"
+                : "p-4 border-b border-blue-gray-50";
+
+              return (
+                <tr key={product._id}>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product?.name}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product?.quantity}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product?.buyPrice}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product?.sellPrice}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product?.MRP}
+                    </Typography>
+                  </td>
+                  <td className={classes}>
+                    <Typography
+                      variant="small"
+                      color="blue-gray"
+                      className="font-normal text-center"
+                    >
+                      {product?.discount}%
+                    </Typography>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {data?.length == 0 && (
+          <h1 className="text-center p-2">No Products To Show</h1>
+        )}
       </Card>
     );
   } else if (type === "NEWBILLINGLIST" || type === "BILLINGLIST") {

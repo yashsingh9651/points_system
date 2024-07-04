@@ -8,6 +8,7 @@ import {
   Collapse,
 } from "@material-tailwind/react";
 import Link from "next/link";
+import axios from "axios";
 import Image from "next/image";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
@@ -31,11 +32,11 @@ export function StickyNavbar() {
   const router = useRouter();
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/users/logout");
-      const res = await response.json();
-      if (res.success) {
+      const res = await axios.get("/api/users/logout");
+      if (res.data.success) {
         dispatch(logout(false));
         router.push("/login");
+        router.replace("/login");
       }
     } catch (error) {
       console.error(error);
@@ -101,14 +102,14 @@ export function StickyNavbar() {
           >
             <Link href="/admin/restock/new">New Restock</Link>
           </Typography>
-          <Typography
+          {/* <Typography
             as="li"
             variant="small"
             color="blue-gray"
             className="p-1 font-normal hover:scale-110 duration-100 min-w-fit"
           >
             <Link href="/admin/creditPoints">Credit Points</Link>
-          </Typography>
+          </Typography> */}
           <Typography
             as="li"
             variant="small"
