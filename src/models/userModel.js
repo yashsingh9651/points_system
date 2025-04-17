@@ -20,11 +20,11 @@ const userSchema = new mongoose.Schema({
     },
     isVerified: {
         type: Boolean,
-        default: false,
+        default: true,
     },
     isAdmin: {
         type: Boolean,
-        default: false,
+        default: true,
     },
     points: {
         type: Number,
